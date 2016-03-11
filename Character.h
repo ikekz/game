@@ -9,16 +9,21 @@
 #define ZOMBIE 'Z'
 #define DRAGON 'D'
 
+class Monster; 
+class Hero;
+
 class Character
 {
 public:
 	Character(int health, int damage, Point& position);
-	virtual void Move(Map& map) = 0;
+	virtual Point Move(Map& map) = 0;
 	virtual char Symbol() = 0;
+	virtual void Interaction(Character&) = 0;
+	virtual void Interaction(Monster&) = 0;
+	virtual void Interaction(Hero&) = 0;
+	void SetPos(Point& pos);
 	Point Pos();
-	bool Fight(Character&);
 	void TakeDamage(Character&);
-	void DealDamage(Character&);
 	int Health();
 protected:
 	int health;
@@ -30,24 +35,33 @@ protected:
 class Princess : public Character
 {
 public:
+	void Interaction(Character&) {};
+	void Interaction(Monster&) {};
+	void Interaction(Hero&) {};
 	Princess(int x, int y);
-	void Move(Map& map);
+	Point Move(Map& map);
 	char Symbol();
 };
 
 class Hero : public Character
 {
 public:
+	void Interaction(Character&);
+	void Interaction(Monster&);
+	void Interaction(Hero&) {};
 	Hero(int x, int y);
-	void Move(Map& map);
+	Point Move(Map& map);
 	char Symbol();
 };
 
 class Monster : public Character
 {
 public:
+	void Interaction(Character&);
+	void Interaction(Monster&) {};
+	void Interaction(Hero&);
 	Monster(int health, int damage, Point& position);
-	void Move(Map& map);
+	Point Move(Map& map);
 };
 
 class Zombie : public Monster

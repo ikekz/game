@@ -7,10 +7,9 @@ class Game
 public:
 	void Start();
 	void CreateCharacter();
-	//void CreateHero();
 	void CreateZombie(int count);
 	void CreateDragon(int count);
-	//void CreatePricess();
+	void PrintStatus();
 	void CheckConflict();
 	void Move();
 	Game(int sizeMap = 10);
@@ -18,7 +17,7 @@ public:
 private:
 	Map map;
 	std::vector<Character*> chs;
-	Hero* hero;
-	Princess* princess;
+	Character* hero;
+	Character* princess;
 	bool end;
 };

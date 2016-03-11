@@ -152,7 +152,6 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="DFS.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Step.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Point.h" />
   </ItemGroup>
