@@ -18,7 +18,7 @@ public:
 private:
 	Map map;
 	std::vector<Character*> chs;
-	Hero hero;
-	Princess princess;
+	Hero* hero;
+	Princess* princess;
 	bool end;
 };
