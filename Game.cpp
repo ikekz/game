@@ -84,7 +84,7 @@ void Game::Move()
 			else
 				end = 1;
 	
-	if (hero.Pos() == Point(0, map.Size() - 1))
+	if (hero.Pos() == princess.Pos())
 		end = 1;
 
 	FeelMap();

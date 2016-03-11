@@ -2,10 +2,10 @@
 #include "Point.h"
 #include "Map.h"
 
-#define HERO 'h'
-#define PRINCESS 'p'
-#define ZOMBIE 'z'
-#define DRAGON 'd'
+#define HERO 'H'
+#define PRINCESS 'P'
+#define ZOMBIE 'Z'
+#define DRAGON 'D'
 
 class Character
 {
