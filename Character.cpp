@@ -1,6 +1,7 @@
 #include "Character.h"
-#include "Step.h"
 #include <set>
+#include <iostream>
+#include <iterator>
 
 using namespace std;
 
@@ -59,7 +60,15 @@ Hero::Hero(int x, int y) : Character(500, 50, Point(x, y)) {}
 
 void Hero::Move(Map& map)
 {
-	Point step = Step();
+	string s;
+	cin >> s;
+	if (ways.find(s) == ways.end())
+	{
+		cout << "Enter the correct action" << endl;
+		Move(map);
+		return;
+	}
+	Point step = ways[s];
 	if (pos + step > Point(-1, -1) && pos + step < Point(map.Size(), map.Size()) &&
 		map.Symbol(pos + step) != WALL)
 	{
@@ -67,7 +76,10 @@ void Hero::Move(Map& map)
 		pos = pos + step;
 	}
 	else
+	{
+		cout << "Enter the correct action" << endl;
 		Move(map);
+	}
 }
 
 char Hero::Symbol()
@@ -79,15 +91,16 @@ Monster::Monster(int health, int damage, Point& position) : Character(health, da
 
 void Monster::Move(Map& map)
 {
-	Point step[4] = { UP, DOWN, LEFT, RIGHT };
 	std::set<char> let = { WALL, ZOMBIE, DRAGON, PRINCESS };
 
-	for (int i = rand() % 4, j = 0; j < 4; i = (i + 1) % 4, j++)
-		if (pos + step[i] > Point(-1, -1) && pos + step[i] < Point(map.Size(), map.Size()) &&
-			let.find(map.Symbol(pos + step[i])) == let.end())
+	std::map<string, Point>::iterator it = ways.begin();
+	advance(it, rand() % ways.size());
+	for (int i = 0; i < ways.size(); it++, it = it == ways.end() ? ways.begin() : it, i++)
+		if (pos + it->second > Point(-1, -1) && pos + it->second < Point(map.Size(), map.Size()) &&
+			let.find(map.Symbol(pos + it->second)) == let.end())
 		{
 			map.Clear(pos);
-			pos = pos + step[i];
+			pos = pos + it->second;
 			map.ChangeSymbol(pos, Symbol());
 			break;
 		}
