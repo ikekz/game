@@ -2,7 +2,15 @@
 #include "Step.h"
 #include <set>
 
-Character::Character(int health, int damage, Point& position) : health(health), damage(damage), pos(position) {}
+using namespace std;
+
+Character::Character(int health, int damage, Point& position) : health(health), damage(damage), pos(position)
+{
+	ways.insert(make_pair("w", Point(-1, 0)));
+	ways.insert(make_pair("s", Point(1, 0)));
+	ways.insert(make_pair("a", Point(0, -1)));
+	ways.insert(make_pair("d", Point(0, 1)));
+}
 
 Point Character::Pos()
 {

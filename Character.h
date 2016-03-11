@@ -1,6 +1,8 @@
 #pragma once
 #include "Point.h"
 #include "Map.h"
+#include <map>
+#include <string>
 
 #define HERO 'H'
 #define PRINCESS 'P'
@@ -22,6 +24,7 @@ protected:
 	int health;
 	int damage;
 	Point pos;
+	std::map<std::string, Point> ways;
 };
 
 class Princess : public Character
