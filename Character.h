@@ -8,6 +8,7 @@
 #define PRINCESS 'P'
 #define ZOMBIE 'Z'
 #define DRAGON 'D'
+#define WIZARD 'W'
 #define WALL '#'
 #define SPACE '.'
 
@@ -114,6 +115,7 @@ public:
 	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
 	Monster(Point& position, int health, int damage);
 	void Move(std::vector<std::vector<Actor*>>& map);
+	Point SelectWay();
 	Point step; //переназвать
 };
 
@@ -129,4 +131,12 @@ class Dragon : public Monster
 public:
 	Dragon(int x, int y);
 	char Symbol();
+};
+
+class Wizard : public Monster
+{
+public:
+	char Symbol();
+	Wizard(int x, int y);
+	void Move(std::vector<std::vector<Actor*>>& map);
 };

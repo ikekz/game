@@ -87,10 +87,10 @@ Space::Space(Point& position) : Block(position) {}
 
 Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
-void Monster::Move(vector<vector<Actor*>>& map)
+Point Monster::SelectWay()
 {
 	if (step.y > 4)
-		return;
+		return Point(0, 0);
 
 	std::map<string, Point>::iterator it = ways.begin();
 	step.x = (step.x + 1) % ways.size();
@@ -102,8 +102,14 @@ void Monster::Move(vector<vector<Actor*>>& map)
 	}
 
 	advance(it, step.x);
+	return it->second;
+}
 
-	Collide(*map[(pos + it->second).x][(pos + it->second).y], map);
+void Monster::Move(vector<vector<Actor*>>& map)
+{
+	Point way = SelectWay();
+
+	Collide(*map[(pos + way).x][(pos + way).y], map);
 	
 }
 
@@ -193,4 +199,18 @@ void Princess::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 void Princess::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
 {
 	src.Move(map);
+}
+
+Wizard::Wizard(int x, int y) : Monster(Point(x, y), 50, 10) {}
+
+char Wizard::Symbol()
+{
+	return WIZARD;
+}
+
+void Wizard::Move(std::vector<std::vector<Actor*>>& map)
+{
+	Point way = SelectWay();
+
+	Collide(*map[(pos + way).x][(pos + way).y], map);
 }

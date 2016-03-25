@@ -9,6 +9,7 @@ public:
 	void CreateCharacter();
 	void CreateZombie(int count);
 	void CreateDragon(int count);
+	void CreateWizard(int count);
 	void PrintStatus();
 	void Move();
 	Game(int sizeMap = 10);

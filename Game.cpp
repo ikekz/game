@@ -12,6 +12,7 @@ void Game::CreateCharacter()
 {
 	CreateZombie(15);
 	CreateDragon(9);
+	CreateWizard(5);
 }
 
 void Game::CreateZombie(int count)
@@ -28,6 +29,15 @@ void Game::CreateDragon(int count)
 	for (int i = 0; i < count; i++)
 	{
 		Dragon* d = new Dragon(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1);
+		map.map[d->Pos().x][d->Pos().y] = d;
+	}
+}
+
+void Game::CreateWizard(int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		Wizard* d = new Wizard(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1);
 		map.map[d->Pos().x][d->Pos().y] = d;
 	}
 }
