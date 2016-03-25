@@ -34,32 +34,35 @@ protected:
 	Point pos;
 };
 
-class Wall : public Actor
+class Block : public Actor
 {
 public:
 	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
+	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};
-	Wall(Point& position) : Actor(position) {};
-	char Symbol();
 	void Action(std::vector<std::vector<Actor*>>& map) {};
+	Block(Point& position);
 };
 
-class Space : public Actor
+class Wall : public Block
 {
 public:
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
 	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};
-	Space(Point& position) : Actor(position) {};
+	Wall(Point& position);
 	char Symbol();
-	void Action(std::vector<std::vector<Actor*>>& map) {};
+};
+
+class Space : public Block
+{
+public:
+	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
+	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	Space(Point& position);
+	char Symbol();
 };
 
 class Character : public Actor

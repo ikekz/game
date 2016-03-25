@@ -79,6 +79,12 @@ void Hero::Move(vector<vector<Actor*>>& map)
 	Collide(*map[(pos + ways[s]).x][(pos + ways[s]).y], map);
 }
 
+Block::Block(Point& position) : Actor(position) {}
+
+Wall::Wall(Point& position) : Block(position) {}
+
+Space::Space(Point& position) : Block(position) {}
+
 Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
 void Monster::Move(vector<vector<Actor*>>& map)
