@@ -86,16 +86,7 @@ void Hero::Move(vector<vector<Actor*>>& map)
 		return;
 	}
 
-	Point step = ways[s];
-	if (pos + step > Point(-1, -1) && pos + step < Point(map.size(), map.size()))
-	{
-		Collide(*map[(pos + step).x][(pos + step).y], map);
-	}
-	else
-	{
-		cout << "Enter the correct action" << endl;
-		Move(map);
-	}
+	Collide(*map[(pos + ways[s]).x][(pos + ways[s]).y], map);
 }
 
 char Hero::Symbol()
