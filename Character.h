@@ -39,7 +39,7 @@ class Wall : public Actor
 public:
 	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
+	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
 	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};

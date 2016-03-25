@@ -154,3 +154,9 @@ void Space::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 	pos = tmp;
 	map[pos.x][pos.y] = this;
 };
+
+void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+{
+	cout << "Enter the correct action" << endl;
+	src.Move(map);
+}
