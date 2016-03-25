@@ -71,6 +71,9 @@ public:
 	void TakeDamage(Character&);
 	int Health();
 	void Action(std::vector<std::vector<Actor*>>& map);
+	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
+	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
+	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};
@@ -83,7 +86,6 @@ protected:
 class Princess : public Character
 {
 public:
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
 	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
 	Princess(int x, int y);
@@ -97,7 +99,6 @@ class Hero : public Character
 public:
 	void Collide(Actor&, std::vector<std::vector<Actor*>>& map);
 	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
 	Hero(int x, int y);
 	void Move(std::vector<std::vector<Actor*>>& map);
 	char Symbol();
@@ -107,7 +108,6 @@ class Monster : public Character
 {
 public:
 	void Collide(Actor&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
 	Monster(Point& position, int health, int damage);
 	void Move(std::vector<std::vector<Actor*>>& map);
