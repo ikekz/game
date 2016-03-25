@@ -30,11 +30,6 @@ Character::Character(Point& position, int health, int damage) : Actor(position),
 	ways.insert(make_pair("d", Point(0, 1)));
 }
 
-void Character::Collide(Character& src, std::vector<std::vector<Actor*>>& map)
-{
-	//Collide()
-}
-
 void Character::Action(std::vector<std::vector<Actor*>>& map)
 {
 	Move(map);
@@ -64,14 +59,9 @@ char Princess::Symbol()
 
 Hero::Hero(int x, int y) : Character(Point(x, y), 500, 50) {}
 
-void Hero::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
+char Hero::Symbol()
 {
-	src.Collide(*this, map);
-}
-
-void Hero::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
-{
-	TakeDamage(src);
+	return HERO;
 }
 
 void Hero::Move(vector<vector<Actor*>>& map)
@@ -89,12 +79,51 @@ void Hero::Move(vector<vector<Actor*>>& map)
 	Collide(*map[(pos + ways[s]).x][(pos + ways[s]).y], map);
 }
 
-char Hero::Symbol()
+Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
+
+void Monster::Move(vector<vector<Actor*>>& map)
 {
-	return HERO;
+	if (step.y > 4)
+		return;
+
+	std::map<string, Point>::iterator it = ways.begin();
+	step.x = (step.x + 1) % ways.size();
+
+	if (step.y == 0)
+	{
+		step.x = rand() % ways.size();
+		step.y++;
+	}
+
+	advance(it, step.x);
+
+	Collide(*map[(pos + it->second).x][(pos + it->second).y], map);
+	
 }
 
-Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
+Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {};
+
+char Zombie::Symbol()
+{
+	return ZOMBIE;
+}
+
+Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {};
+
+char Dragon::Symbol()
+{
+	return DRAGON;
+}
+
+void Hero::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
+{
+	src.Collide(*this, map);
+}
+
+void Hero::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
+{
+	TakeDamage(src);
+}
 
 void Monster::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
 {
@@ -113,26 +142,6 @@ void Monster::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 
 		map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
 	}
-}
-
-void Monster::Move(vector<vector<Actor*>>& map)
-{
-	std::map<string, Point>::iterator it = ways.begin();
-	advance(it, rand() % ways.size());
-}
-
-Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {};
-
-char Zombie::Symbol()
-{
-	return ZOMBIE;
-}
-
-Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {};
-
-char Dragon::Symbol()
-{
-	return DRAGON;
 }
 
 void Space::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
@@ -156,6 +165,8 @@ void Space::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
 	pos = tmp;
 	map[pos.x][pos.y] = this;
 
+	src.step.y = 0;
+
 };
 void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 {
@@ -165,11 +176,15 @@ void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 
 void Wall::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
 {
-	cout << "Enter the correct action" << endl;
 	src.Move(map);
 }
 
 void Princess::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 {
 	src.SetPos(pos);
+}
+
+void Princess::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
+{
+	src.Move(map);
 }

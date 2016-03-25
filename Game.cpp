@@ -73,8 +73,12 @@ void Game::Move()
 	cout << "Hero health: " << ((Hero*)hero)->Health() << endl;
 
 	vector<vector<Actor*>> buf = map.map;
+	Point tmp = hero->Pos();
+	buf[tmp.x][tmp.y] = buf[0][0];
+	buf[0][0] = hero;
 
 	for (int i = 0; i < map.Size(); i++)
 		for (int j = 0; j < map.Size(); j++)
-			buf[i][j]->Action(map.map);
+			if (((Character*)buf[i][j])->Health() > 0)
+				buf[i][j]->Action(map.map);
 }
