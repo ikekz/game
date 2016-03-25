@@ -12,9 +12,9 @@ public:
 	void PrintStatus();
 	void Move();
 	Game(int sizeMap = 10);
+	bool IsEnd();
 private:
 	Map map;
 	Actor* hero;
 	Actor* princess;
-	bool end;
 };

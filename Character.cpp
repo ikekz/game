@@ -160,3 +160,8 @@ void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 	cout << "Enter the correct action" << endl;
 	src.Move(map);
 }
+
+void Princess::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+{
+	src.SetPos(pos);
+}

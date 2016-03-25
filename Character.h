@@ -85,7 +85,7 @@ class Princess : public Character
 public:
 	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
 	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
+	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
 	Princess(int x, int y);
 	void Action(std::vector<std::vector<Actor*>>& map) {};
 	void Move(std::vector<std::vector<Actor*>>& map) {};
