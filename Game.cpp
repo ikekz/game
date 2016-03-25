@@ -18,7 +18,7 @@ void Game::CreateZombie(int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Zombie* z = new Zombie(rand() % (map.Size() - 1) + 1, rand() % (map.Size() - 1) + 1);
+		Zombie* z = new Zombie(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1);
 		map.map[z->Pos().x][z->Pos().y] = z;
 	}
 }
@@ -27,7 +27,7 @@ void Game::CreateDragon(int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Dragon* d = new Dragon(rand() % (map.Size() - 1) + 1, rand() % (map.Size() - 1) + 1);
+		Dragon* d = new Dragon(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1);
 		map.map[d->Pos().x][d->Pos().y] = d;
 	}
 }
