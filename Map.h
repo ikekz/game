@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Point.h"
-#include "Character.h"
+#include "Actor.h"
 
 #define WALL '#'
 #define SPACE '.'
