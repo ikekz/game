@@ -53,10 +53,13 @@ void Map::GenMap()
 			buf[i][j] = SPACE;
 	}
 
-	for (int i = 0; i < 40; i++)
-		buf[rand() % size][rand() % size] = WALL;
+	for (int i = 0; i < size; i++)
+		buf[i][0] = buf[i][size - 1] = buf[0][i] = buf[size - 1][i] = WALL;
 
-	if (!CheckWay(buf, size - 1, 0))
+	for (int i = 0; i < 40; i++)
+		buf[rand() % (size - 1) + 1][rand() % (size - 1) + 1] = WALL;
+
+	if (!CheckWay(buf, size - 2, 1))
 		GenMap();
 	else
 		for (int i = 0; i < size; i++)
@@ -65,6 +68,5 @@ void Map::GenMap()
 					map[i][j] = new Wall(Point(i, j));
 				else
 					map[i][j] = new Space(Point(i, j));
-			
 
 }

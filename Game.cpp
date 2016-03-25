@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Game::Game(int sizeMap) : map(sizeMap), hero(new Hero(sizeMap - 1, 0)), princess(new Princess(0, sizeMap - 1)) {};
+Game::Game(int sizeMap) : map(sizeMap), hero(new Hero(sizeMap - 2, 1)), princess(new Princess(1, sizeMap - 2)) {};
 
 void Game::CreateCharacter()
 {
@@ -18,7 +18,7 @@ void Game::CreateZombie(int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Zombie* z = new Zombie(rand() % map.Size(), rand() % map.Size());
+		Zombie* z = new Zombie(rand() % (map.Size() - 1) + 1, rand() % (map.Size() - 1) + 1);
 		map.map[z->Pos().x][z->Pos().y] = z;
 	}
 }
@@ -27,7 +27,7 @@ void Game::CreateDragon(int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		Dragon* d = new Dragon(rand() % map.Size(), rand() % map.Size());
+		Dragon* d = new Dragon(rand() % (map.Size() - 1) + 1, rand() % (map.Size() - 1) + 1);
 		map.map[d->Pos().x][d->Pos().y] = d;
 	}
 }

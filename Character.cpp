@@ -155,7 +155,24 @@ void Space::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 	map[pos.x][pos.y] = this;
 };
 
+void Space::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
+{
+	Point tmp = src.Pos();
+
+	src.SetPos(pos);
+	map[pos.x][pos.y] = &src;
+
+	pos = tmp;
+	map[pos.x][pos.y] = this;
+
+};
 void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+{
+	cout << "Enter the correct action" << endl;
+	src.Move(map);
+}
+
+void Wall::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
 {
 	cout << "Enter the correct action" << endl;
 	src.Move(map);
