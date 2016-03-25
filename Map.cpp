@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Map::Map(int size) : size(size) 
+Map::Map(int size) 
 {
 	map.resize(size);
 	for (int i = 0; i < size; i++)
@@ -13,7 +13,7 @@ Map::Map(int size) : size(size)
 
 int Map::Size()
 {
-	return size;
+	return map.size();
 }
 
 Actor* Map::operator[](const Point& src)
@@ -23,9 +23,9 @@ Actor* Map::operator[](const Point& src)
 
 void Map::RenderMap()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < map.size(); i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < map.size(); j++)
 			cout << map[i][j]->Symbol();
 		cout << endl;
 	}
@@ -33,37 +33,37 @@ void Map::RenderMap()
 
 bool Map::CheckWay(char** buf, int x, int y)
 {
-	char** tmp = new char*[size];
-	for (int i = 0; i < size; i++)
+	char** tmp = new char*[map.size()];
+	for (int i = 0; i < map.size(); i++)
 	{
-		tmp[i] = new char[size];
-		for (int j = 0; j < size; j++)
+		tmp[i] = new char[map.size()];
+		for (int j = 0; j < map.size(); j++)
 			tmp[i][j] = buf[i][j];
 	}
-	return DFS(tmp, size, x, y);
+	return DFS(tmp, map.size(), x, y);
 }
 
 void Map::GenMap()
 {
-	char** buf = new char*[size];
-	for (int i = 0; i < size; i++)
+	char** buf = new char*[map.size()];
+	for (int i = 0; i < map.size(); i++)
 	{
-		buf[i] = new char[size];
-		for (int j = 0; j < size; j++)
+		buf[i] = new char[map.size()];
+		for (int j = 0; j < map.size(); j++)
 			buf[i][j] = SPACE;
 	}
 
-	for (int i = 0; i < size; i++)
-		buf[i][0] = buf[i][size - 1] = buf[0][i] = buf[size - 1][i] = WALL;
+	for (int i = 0; i < map.size(); i++)
+		buf[i][0] = buf[i][map.size() - 1] = buf[0][i] = buf[map.size() - 1][i] = WALL;
 
 	for (int i = 0; i < 40; i++)
-		buf[rand() % (size - 1) + 1][rand() % (size - 1) + 1] = WALL;
+		buf[rand() % (map.size() - 1) + 1][rand() % (map.size() - 1) + 1] = WALL;
 
-	if (!CheckWay(buf, size - 2, 1))
+	if (!CheckWay(buf, map.size() - 2, 1))
 		GenMap();
 	else
-		for (int i = 0; i < size; i++)
-			for (int j = 0; j < size; j++)
+		for (int i = 0; i < map.size(); i++)
+			for (int j = 0; j < map.size(); j++)
 				if (buf[i][j] == WALL)
 					map[i][j] = new Wall(Point(i, j));
 				else

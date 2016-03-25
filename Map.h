@@ -16,6 +16,4 @@ public:
 	Actor* operator[](const Point&);
 	bool CheckWay(char** buf, int x, int y);
 	std::vector<std::vector<Actor*>> map;
-private:
-	int size;
 };
