@@ -12,43 +12,24 @@ void Game::CreateCharacter()
 {
 	CreateZombie(15);
 	CreateDragon(9);
-	CheckConflict();
-	FeelMap();
 }
 
 void Game::CreateZombie(int count)
 {
 	for (int i = 0; i < count; i++)
-		chs.push_back(new Zombie(rand() % map.Size(), rand() % map.Size()));
+	{
+		Zombie* z = new Zombie(rand() % map.Size(), rand() % map.Size());
+		map.map[z->Pos().x][z->Pos().y] = z;
+	}
 }
 
 void Game::CreateDragon(int count)
 {
 	for (int i = 0; i < count; i++)
-		chs.push_back(new Dragon(rand() % map.Size(), rand() % map.Size()));
-}
-
-void Game::CheckConflict()
-{
-	for (int i = 0; i < chs.size(); i++)
 	{
-		for (int j = i + 1; j < chs.size(); j++)
-			if (chs[i]->Pos() == chs[j]->Pos())
-				chs.erase(chs.begin() + j);
-
-		if (chs[i]->Pos() == hero->Pos() || chs[i]->Pos() == princess->Pos())
-			chs.erase(chs.begin() + i);
+		Dragon* d = new Dragon(rand() % map.Size(), rand() % map.Size());
+		map.map[d->Pos().x][d->Pos().y] = d;
 	}
-}
-
-void Game::FeelMap()
-{
-	map.ChangeSymbol(hero->Pos(), hero->Symbol());
-
-	map.ChangeSymbol(princess->Pos(), princess->Symbol());
-
-	for (int i = 0; i < chs.size(); i++)
-		map.ChangeSymbol(chs[i]->Pos(), chs[i]->Symbol());
 }
 
 void Game::Start()
@@ -56,61 +37,37 @@ void Game::Start()
 	srand(time(0));
 	map.GenMap();
 	CreateCharacter();
-
+	map.map[hero->Pos().x][hero->Pos().y] = hero;
+	map.map[princess->Pos().x][princess->Pos().y] = princess;
+	//map.RenderMap();
+	
 	while (!end)	
 	{
 		system("cls");
 		map.RenderMap();
 		Move();	
 	}
-
-	PrintStatus();
+	
+	//PrintStatus();
 }
 
 void Game::PrintStatus()
 {
 	system("cls");
 
-	if (hero->Health() > 0)
-		cout << "YOU WON!\n" << endl;
-	else
-		cout << "GAME OVER\n" << endl;
+	//if (hero->Health() > 0)
+	//	cout << "YOU WON!\n" << endl;
+	//else
+	//	cout << "GAME OVER\n" << endl;
 }
 
 void Game::Move()
 {
-	cout << "Hero health: " << hero->Health() << endl;
+	cout << "Hero health: " << ((Hero*)(hero))->Health() << endl;
 
-	Point pos = hero->Move(map);
-	if (pos == princess->Pos())
-	{
-		end = 1;
-		return;
-	}
+	vector<vector<Actor*>> buf = map.map;
 
-	for (int i = 0; i < chs.size(); i++)
-		if (pos == chs[i]->Pos())
-		{
-			map.Clear(hero->Pos());
-			hero->Interaction(*chs[i]);
-			if (chs[i]->Health() <= 0)
-			{
-				hero->SetPos(pos);
-				chs.erase(chs.begin() + i);
-			}
-			map.ChangeSymbol(hero->Pos(), hero->Symbol());
-		}
-
-	for (int i = 0; i < chs.size(); i++)
-	{
-		Point pos = chs[i]->Move(map);
-		if (pos == hero->Pos())
-		{
-			chs[i]->Interaction(*hero);
-			if (hero->Health() <= 0)
-				end = 1;
-		}
-	}
-	
-	FeelMap();
+	for (int i = 0; i < map.Size(); i++)
+		for (int j = 0; j < map.Size(); j++)
+			buf[i][j]->Action(map.map);
 }

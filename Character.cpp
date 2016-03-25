@@ -5,7 +5,24 @@
 
 using namespace std;
 
-Character::Character(int health, int damage, Point& position) : health(health), damage(damage), pos(position)
+Actor::Actor(Point& position) : pos(position) {};
+
+Point Actor::Pos()
+{
+	return pos;
+}
+
+char Wall::Symbol()
+{
+	return '#';
+}
+
+char Space::Symbol()
+{
+	return '.';
+}
+
+Character::Character(Point& position, int health, int damage) : Actor(position), health(health), damage(damage)
 {
 	ways.insert(make_pair("w", Point(-1, 0)));
 	ways.insert(make_pair("s", Point(1, 0)));
@@ -13,9 +30,14 @@ Character::Character(int health, int damage, Point& position) : health(health), 
 	ways.insert(make_pair("d", Point(0, 1)));
 }
 
-Point Character::Pos()
+void Character::Collide(Character& src, std::vector<std::vector<Actor*>>& map)
 {
-	return pos;
+	//Collide()
+}
+
+void Character::Action(std::vector<std::vector<Actor*>>& map)
+{
+	Move(map);
 }
 
 int Character::Health()
@@ -33,31 +55,26 @@ void Character::TakeDamage(Character& enemy)
 	health -= enemy.damage;
 }
 
-Princess::Princess(int x, int y) : Character(0, 0, Point(x, y)) {}
-
-Point Princess::Move(Map& map)
-{
-	return Point(-1, -1);
-}
+Princess::Princess(int x, int y) : Character(Point(x, y), 0, 0) {}
 
 char Princess::Symbol()
 {
 	return PRINCESS;
 }
 
-Hero::Hero(int x, int y) : Character(500, 50, Point(x, y)) {}
+Hero::Hero(int x, int y) : Character(Point(x, y), 500, 50) {}
 
-void Hero::Interaction(Character& ch)
+void Hero::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
 {
-	ch.Interaction(*this);
+	src.Collide(*this, map);
 }
 
-void Hero::Interaction(Monster& monster)
+void Hero::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
 {
-	TakeDamage(monster);
+	TakeDamage(src);
 }
 
-Point Hero::Move(Map& map)
+void Hero::Move(vector<vector<Actor*>>& map)
 {
 	string s;
 	cin >> s;
@@ -66,29 +83,19 @@ Point Hero::Move(Map& map)
 	{
 		cout << "Enter the correct action" << endl;
 		Move(map);
-		return Point(-1, -1);
+		return;
 	}
 
 	Point step = ways[s];
-	if (pos + step > Point(-1, -1) && pos + step < Point(map.Size(), map.Size()) &&
-		map.Symbol(pos + step) != WALL)
+	if (pos + step > Point(-1, -1) && pos + step < Point(map.size(), map.size()))
 	{
-		if (map.Symbol(pos + step) == SPACE)
-		{
-			map.Clear(pos);
-			pos = pos + step;
-			map.ChangeSymbol(pos, Symbol());
-		}
-		else
-			return pos + step;
+		Collide(*map[(pos + step).x][(pos + step).y], map);
 	}
 	else
 	{
 		cout << "Enter the correct action" << endl;
 		Move(map);
 	}
-
-	return Point(-1, -1);
 }
 
 char Hero::Symbol()
@@ -96,48 +103,54 @@ char Hero::Symbol()
 	return HERO;
 }
 
-Monster::Monster(int health, int damage, Point& position) : Character(health, damage, position) {}
+Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
-void Monster::Interaction(Character& ch)
+void Monster::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
 {
-	ch.Interaction(*this);
+	src.Collide(*this, map);
 }
 
-void Monster::Interaction(Hero& hero)
+void Monster::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 {
-	TakeDamage(hero);
+	TakeDamage(src);
+	if (health <= 0)
+	{
+		Point tmp = src.Pos();
+
+		src.SetPos(pos);
+		map[pos.x][pos.y] = &src;
+
+		map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
+	}
 }
 
-Point Monster::Move(Map& map)
+void Monster::Move(vector<vector<Actor*>>& map)
 {
 	std::map<string, Point>::iterator it = ways.begin();
 	advance(it, rand() % ways.size());
-	for (int i = 0; i < ways.size(); it++, it = it == ways.end() ? ways.begin() : it, i++)
-		if (pos + it->second > Point(-1, -1) && pos + it->second < Point(map.Size(), map.Size()) &&
-			map.Symbol(pos + it->second) != WALL)
-			if (map.Symbol(pos + it->second) == SPACE)
-			{
-				map.Clear(pos);
-				pos = pos + it->second;
-				map.ChangeSymbol(pos, Symbol());
-				break;
-			}
-			else
-				return pos + it->second;
-
-	return Point(-1, -1);
 }
 
-Zombie::Zombie(int x, int y) : Monster(50, 50, Point(x, y)) {};
+Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {};
 
 char Zombie::Symbol()
 {
 	return ZOMBIE;
 }
 
-Dragon::Dragon(int x, int y) : Monster(100, 150, Point(x, y)) {};
+Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {};
 
 char Dragon::Symbol()
 {
 	return DRAGON;
 }
+
+void Space::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+{
+	Point tmp = src.Pos();
+
+	src.SetPos(pos);
+	map[pos.x][pos.y] = &src;
+
+	pos = tmp;
+	map[pos.x][pos.y] = this;
+};

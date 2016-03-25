@@ -9,4 +9,5 @@ public:
 	bool operator>(Point&);
 	bool operator<(Point&);
 	bool operator==(Point&);
+	bool operator!=(Point&);
 };

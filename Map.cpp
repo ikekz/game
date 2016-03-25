@@ -4,21 +4,21 @@
 
 using namespace std;
 
-Map::Map(int size) : size(size) {};
+Map::Map(int size) : size(size) 
+{
+	map.resize(size);
+	for (int i = 0; i < size; i++)
+		map[i].resize(size);
+};
 
 int Map::Size()
 {
 	return size;
 }
 
-void Map::ChangeSymbol(Point& pos, char c)
+Actor* Map::operator[](const Point& src)
 {
-	map[pos.x][pos.y] = c;
-}
-
-char Map::Symbol(Point& pos)
-{
-	return map[pos.x][pos.y];
+	return map[src.x][src.y];
 }
 
 void Map::RenderMap()
@@ -26,41 +26,45 @@ void Map::RenderMap()
 	for (int i = 0; i < size; i++)
 	{
 		for (int j = 0; j < size; j++)
-			cout << map[i][j];
+			cout << map[i][j]->Symbol();
 		cout << endl;
 	}
 }
 
-void Map::Clear(Point& pos)
+bool Map::CheckWay(char** buf, int x, int y)
 {
-	map[pos.x][pos.y] = SPACE;
+	char** tmp = new char*[size];
+	for (int i = 0; i < size; i++)
+	{
+		tmp[i] = new char[size];
+		for (int j = 0; j < size; j++)
+			tmp[i][j] = buf[i][j];
+	}
+	return DFS(tmp, size, x, y);
 }
 
-bool Map::CheckWay(int x, int y)
+void Map::GenMap()
 {
 	char** buf = new char*[size];
 	for (int i = 0; i < size; i++)
 	{
 		buf[i] = new char[size];
 		for (int j = 0; j < size; j++)
-			buf[i][j] = map[i][j];
-	}
-	return DFS(buf, size, x, y);
-}
-
-void Map::GenMap()
-{
-	map = new char*[size];
-	for (int i = 0; i < size; i++)
-	{
-		map[i] = new char[size];
-		for (int j = 0; j < size; j++)
-			map[i][j] = SPACE;	
+			buf[i][j] = SPACE;
 	}
 
 	for (int i = 0; i < 40; i++)
-		map[rand() % size][rand() % size] = WALL;
+		buf[rand() % size][rand() % size] = WALL;
 
-	if (!CheckWay(size - 1, 0))
+	if (!CheckWay(buf, size - 1, 0))
 		GenMap();
+	else
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				if (buf[i][j] == WALL)
+					map[i][j] = new Wall(Point(i, j));
+				else
+					map[i][j] = new Space(Point(i, j));
+			
+
 }

@@ -30,3 +30,11 @@ bool Point::operator==(Point& src)
 	else
 		return 0;
 }
+
+bool Point::operator!=(Point& src)
+{
+	if (x == src.x && y == src.y)
+		return 0;
+	else
+		return 1;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Point.h"
+#include "Character.h"
 
 #define WALL '#'
 #define SPACE '.'
@@ -12,11 +13,9 @@ public:
 	void GenMap();
 	void RenderMap();
 	int Size();
-	void ChangeSymbol(Point& pos, char);
-	char Symbol(Point& pos);
-	bool CheckWay(int x, int y);
-	void Clear(Point& pos);
+	Actor* operator[](const Point&);
+	bool CheckWay(char** buf, int x, int y);
+	std::vector<std::vector<Actor*>> map;
 private:
 	int size;
-	char** map;
 };
