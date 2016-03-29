@@ -5,9 +5,14 @@
 
 using namespace std;
 
-Actor::Actor(Point& position) : pos(position) {};
+Actor::Actor(Point position) : pos(position) {};
 
 Point Actor::Pos()
 {
 	return pos;
+}
+
+void Actor::SetPos(Point& pos)
+{
+	this->pos = pos;
 }

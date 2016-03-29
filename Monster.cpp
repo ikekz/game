@@ -25,44 +25,35 @@ Point Monster::SelectWay()
 	return it->second;
 }
 
-void Monster::Move(vector<vector<Actor*>>& map)
+void Monster::Move(Map& map)
 {
 	Point way = SelectWay();
 
-	Collide(*map[(pos + way).x][(pos + way).y], map);
+	Collide(*map.map[(pos + way).x][(pos + way).y], map);
 
+	step.y = 0;
 }
 
-Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {};
+Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {}
 
 char Zombie::Symbol()
 {
 	return ZOMBIE;
 }
 
-Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {};
+Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {}
 
 char Dragon::Symbol()
 {
 	return DRAGON;
 }
 
-void Hero::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
+void Monster::Collide(Actor& src, Map& map)
 {
 	src.Collide(*this, map);
 }
 
-void Hero::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
-{
-	TakeDamage(src);
-}
-
-void Monster::Collide(Actor& src, std::vector<std::vector<Actor*>>& map)
-{
-	src.Collide(*this, map);
-}
-
-void Monster::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+void Monster::Collide(Hero& src, Map& map)
 {
 	TakeDamage(src);
 	if (health <= 0)
@@ -70,13 +61,13 @@ void Monster::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
 		Point tmp = src.Pos();
 
 		src.SetPos(pos);
-		map[pos.x][pos.y] = &src;
+		map.map[pos.x][pos.y] = &src;  // Swap
 
-		map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
+		map.map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
 	}
 }
 
-void Princess::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+void Princess::Collide(Hero& src, Map& map)
 {
 	src.SetPos(pos);
 }
@@ -88,9 +79,16 @@ char Wizard::Symbol()
 	return WIZARD;
 }
 
-void Wizard::Move(std::vector<std::vector<Actor*>>& map)
+Fireball* Wizard::CreateFireball(Point& way)
 {
-	Point way = SelectWay();
+	return new Fireball(pos + way, way);
+}
 
-	Collide(*map[(pos + way).x][(pos + way).y], map);
+void Wizard::Action(Map& map)
+{
+	Point way = map.CalcWay(pos, map.hero->Pos());
+	if ((pos.x == map.hero->Pos().x || pos.y == map.hero->Pos().y) && map.map[(pos + way).x][(pos + way).y]->Symbol() == SPACE)
+		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way);
+	else
+		Move(map);
 }

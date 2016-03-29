@@ -2,28 +2,32 @@
 
 Point::Point(int x, int y) : x(x), y(y) {};
 
-Point Point::operator+(Point& src)
+Point Point::operator+(const Point& src) const
 {
 	return Point(x + src.x, y + src.y);
 }
 
-bool Point::operator>(Point& src)
+bool Point::operator>(const Point& src) const
 {
-	if (x > src.x && y > src.y)
+	if (x > src.x)
+		return 1;
+	else if (x == src.x && y > src.y)
 		return 1;
 	else
 		return 0;
 }
 
-bool Point::operator<(Point& src)
+bool Point::operator<(const Point& src) const
 {
-	if (x < src.x && y < src.y)
+	if (x < src.x)
+		return 1;
+	else if (x == src.x && y < src.y)
 		return 1;
 	else
 		return 0;
 }
 
-bool Point::operator==(Point& src)
+bool Point::operator==(const Point& src) const
 {
 	if (x == src.x && y == src.y)
 		return 1;
@@ -31,7 +35,7 @@ bool Point::operator==(Point& src)
 		return 0;
 }
 
-bool Point::operator!=(Point& src)
+bool Point::operator!=(const Point& src) const
 {
 	if (x == src.x && y == src.y)
 		return 0;

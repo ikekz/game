@@ -1,10 +1,11 @@
 #include "Map.h"
 #include <iostream>
 #include "DFS.h"
+#include "Actor.h"
 
 using namespace std;
 
-Map::Map(int size) 
+Map::Map(int size) : hero(new Hero(size - 2, 1)), princess(new Princess(1, size - 2))
 {
 	map.resize(size);
 	for (int i = 0; i < size; i++)
@@ -20,6 +21,34 @@ Actor* Map::operator[](const Point& src)
 {
 	return map[src.x][src.y];
 }
+
+Point Map::CalcWay(Point& src1, Point& src2)
+{
+	if (src1.x == src2.x)
+		return Point(0, src1.y > src2.y ? 1 : -1);
+	else if (src1.y == src2.y)
+		return Point(src1.x > src2.x ? 1 : -1, 0);
+	else
+		return Point(-1, -1);
+}
+
+void Map::PlaceHeroes()
+{
+	map[hero->Pos().x][hero->Pos().y] = hero;
+	map[princess->Pos().x][princess->Pos().y] = princess;
+}
+
+void Map::Swap(Actor& src1, Actor& src2)
+{
+	Point tmp = src1.Pos();
+
+	src1.SetPos(src2.Pos());
+	map[src2.Pos().x][src2.Pos().y] = &src1;
+
+	src2.SetPos(tmp);
+	map[src2.Pos().x][src2.Pos().y] = &src2;
+}
+
 
 void Map::RenderMap()
 {

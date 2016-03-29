@@ -16,6 +16,4 @@ public:
 	bool IsEnd();
 private:
 	Map map;
-	Actor* hero;
-	Actor* princess;
 };

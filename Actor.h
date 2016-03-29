@@ -3,6 +3,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include "Map.h"
 
 #define HERO 'H'
 #define PRINCESS 'P'
@@ -12,56 +13,58 @@
 #define WALL '#'
 #define SPACE '.'
 
+class Map;
 class Monster; 
 class Hero;
 class Wall;
 class Space;
 class Character;
+class Fireball;
 
 class Actor
 {
 public:
-	Actor(Point& position);
+	Actor(Point position);
 	virtual char Symbol() = 0;
-	virtual void Collide(Actor&, std::vector<std::vector<Actor*>>& map) = 0;
-	virtual void Collide(Monster&, std::vector<std::vector<Actor*>>& map) = 0;
-	virtual void Collide(Hero&, std::vector<std::vector<Actor*>>& map) = 0;
-	virtual void Collide(Wall&, std::vector<std::vector<Actor*>>& map) = 0;
-	virtual void Collide(Space&, std::vector<std::vector<Actor*>>& map) = 0;
-	virtual void Collide(Character&, std::vector<std::vector<Actor*>>& map) = 0;
+	virtual void Collide(Actor&, Map&) {};
+	virtual void Collide(Monster&, Map&) {};
+	virtual void Collide(Hero&, Map&) {};
+	virtual void Collide(Wall&, Map&) {};
+	virtual void Collide(Space&, Map&) {};
 	Point Pos();
-	virtual void Action(std::vector<std::vector<Actor*>>& map) = 0;
+	void SetPos(Point& pos);
+	virtual void Action(Map&) {};
 protected:
 	Point pos;
 };
 
-class Block : public Actor
+class Fireball : public Actor
 {
 public:
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};
-	void Action(std::vector<std::vector<Actor*>>& map) {};
-	Block(Point& position);
+	void Action(Map& map);
+	Fireball(Point& position, Point& way);
+	char Symbol();
+protected:
+	Point way;
+	static std::map<Point, char> ways;
 };
 
-class Wall : public Block
+class Wall : public Actor
 {
 public:
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	//void Collide(Character&, Map&);
+	void Collide(Monster&, Map&);
+	void Collide(Hero&, Map&);
 	Wall(Point& position);
 	char Symbol();
 };
 
-class Space : public Block
+class Space : public Actor
 {
 public:
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	void Collide(Actor&, Map&); //delete
+	void Collide(Hero&, Map&);
+	void Collide(Monster&, Map&);
 	Space(Point& position);
 	char Symbol();
 };
@@ -70,51 +73,44 @@ class Character : public Actor
 {
 public:
 	Character(Point& position, int health, int damage);
-	virtual void Move(std::vector<std::vector<Actor*>>& map) = 0;
-	void SetPos(Point& pos);
+	virtual void Move(Map&) = 0;
 	void TakeDamage(Character&);
 	int Health();
-	void Action(std::vector<std::vector<Actor*>>& map);
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Wall&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Space&, std::vector<std::vector<Actor*>>& map) {};
-	void Collide(Character&, std::vector<std::vector<Actor*>>& map) {};
+	void Action(Map& map);
 protected:
 	int health;
 	int damage;
-	std::map<std::string, Point> ways;
+	static std::map<std::string, Point> ways;
 };
 
 class Princess : public Character
 {
 public:
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	//void Collide(Monster&, Map& map);
+	void Collide(Hero&, Map&);
 	Princess(int x, int y);
-	void Action(std::vector<std::vector<Actor*>>& map) {};
-	void Move(std::vector<std::vector<Actor*>>& map) {};
+	void Action(Map& map) {};
+	void Move(Map& map) {};
 	char Symbol();
 };
 
 class Hero : public Character
 {
 public:
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Monster&, std::vector<std::vector<Actor*>>& map);
+	void Collide(Actor&, Map&);
+	void Collide(Monster&, Map&);
 	Hero(int x, int y);
-	void Move(std::vector<std::vector<Actor*>>& map);
+	void Move(Map&);
 	char Symbol();
 };
 
 class Monster : public Character
 {
 public:
-	void Collide(Actor&, std::vector<std::vector<Actor*>>& map);
-	void Collide(Hero&, std::vector<std::vector<Actor*>>& map);
+	void Collide(Actor&, Map&);
+	void Collide(Hero&, Map&);
 	Monster(Point& position, int health, int damage);
-	void Move(std::vector<std::vector<Actor*>>& map);
+	void Move(Map&);
 	Point SelectWay();
 	Point step; //переназвать
 };
@@ -136,7 +132,8 @@ public:
 class Wizard : public Monster
 {
 public:
+	Fireball* CreateFireball(Point& way);
 	char Symbol();
 	Wizard(int x, int y);
-	void Move(std::vector<std::vector<Actor*>>& map);
+	void Action(Map&);
 };

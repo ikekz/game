@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Game::Game(int sizeMap) : map(sizeMap), hero(new Hero(sizeMap - 2, 1)), princess(new Princess(1, sizeMap - 2)) {};
+Game::Game(int sizeMap) : map(sizeMap) {};
 
 void Game::CreateCharacter()
 {
@@ -44,7 +44,7 @@ void Game::CreateWizard(int count)
 
 bool Game::IsEnd()
 {
-	if (((Hero*)hero)->Health() <= 0 || hero->Pos() == princess->Pos())
+	if (((Hero*)map.hero)->Health() <= 0 || map.hero->Pos() == map.princess->Pos())
 		return 1;
 	else
 		return 0;
@@ -55,9 +55,8 @@ void Game::Start()
 	srand(time(0));
 	map.GenMap();
 	CreateCharacter();
-	map.map[hero->Pos().x][hero->Pos().y] = hero;
-	map.map[princess->Pos().x][princess->Pos().y] = princess;
-	
+	map.PlaceHeroes();
+
 	while (!IsEnd())
 	{
 		system("cls");
@@ -72,7 +71,7 @@ void Game::PrintStatus()
 {
 	system("cls");
 
-	if (((Hero*)hero)->Health() > 0)
+	if (((Hero*)map.hero)->Health() > 0)
 		cout << "YOU WON!\n" << endl;
 	else
 		cout << "GAME OVER\n" << endl;
@@ -80,15 +79,15 @@ void Game::PrintStatus()
 
 void Game::Move()
 {
-	cout << "Hero health: " << ((Hero*)hero)->Health() << endl;
+	cout << "Hero health: " << ((Hero*)map.hero)->Health() << endl;
 
 	vector<vector<Actor*>> buf = map.map;
-	Point tmp = hero->Pos();
+	Point tmp = map.hero->Pos();
 	buf[tmp.x][tmp.y] = buf[0][0];
-	buf[0][0] = hero;
+	buf[0][0] = map.hero;
 
 	for (int i = 0; i < map.Size(); i++)
 		for (int j = 0; j < map.Size(); j++)
 			if (((Character*)buf[i][j])->Health() > 0)
-				buf[i][j]->Action(map.map);
+				buf[i][j]->Action(map);
 }

@@ -1,58 +1,44 @@
 #include "Actor.h"
-#include <set>
 #include <iostream>
-#include <iterator>
 
 using namespace std;
 
-Block::Block(Point& position) : Actor(position) {}
+Wall::Wall(Point& position) : Actor(position) {}
 
-Wall::Wall(Point& position) : Block(position) {}
-
-Space::Space(Point& position) : Block(position) {}
+Space::Space(Point& position) : Actor(position) {}
 
 char Wall::Symbol()
 {
-	return '#';
+	return WALL;
 }
 
 char Space::Symbol()
 {
-	return '.';
+	return SPACE;
 }
 
-void Space::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+void Space::Collide(Actor& src, Map& map)
 {
-	Point tmp = src.Pos();
+	map.Swap(src, *this);
+}
 
-	src.SetPos(pos);
-	map[pos.x][pos.y] = &src;
-
-	pos = tmp;
-	map[pos.x][pos.y] = this;
-};
-
-void Space::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
+void Space::Collide(Hero& src, Map& map)
 {
-	Point tmp = src.Pos();
+	Collide(*(Actor*)(&src), map);
+}
 
-	src.SetPos(pos);
-	map[pos.x][pos.y] = &src;
+void Space::Collide(Monster& src, Map& map)
+{
+	Collide(*(Actor*)(&src), map);
+}
 
-	pos = tmp;
-	map[pos.x][pos.y] = this;
-
-	src.step.y = 0;
-
-};
-
-void Wall::Collide(Hero& src, std::vector<std::vector<Actor*>>& map)
+void Wall::Collide(Hero& src, Map& map)
 {
 	cout << "Enter the correct action" << endl;
 	src.Move(map);
 }
 
-void Wall::Collide(Monster& src, std::vector<std::vector<Actor*>>& map)
+void Wall::Collide(Monster& src, Map& map)
 {
 	src.Move(map);
 }
