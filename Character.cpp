@@ -19,19 +19,19 @@ void Character::Action(Map& map)
 	Move(map);
 }
 
-void Hero::Collide(Actor& src, Map& map)
-{
-	src.Collide(*this, map);
-}
-
 int Character::Health()
 {
 	return health;
 }
 
-void Character::TakeDamage(Character& enemy)
+void Character::Collide(Actor* src, Map& map)
 {
-	health -= enemy.damage;
+	src->Collide(this, map);
+}
+
+void Character::DealDamage(Character* enemy)
+{
+	enemy->health -= damage;
 }
 
 Princess::Princess(int x, int y) : Character(Point(x, y), 0, 0) {}
@@ -41,11 +41,45 @@ char Princess::Symbol()
 	return PRINCESS;
 }
 
+void Princess::Collide(Character* src, Map& map)
+{
+	src->Collide(this, map);
+}
+
+void Princess::Collide(Actor* src, Map& map)
+{
+	src->Collide(this, map);
+}
+
 Hero::Hero(int x, int y) : Character(Point(x, y), 500, 50) {}
 
-void Hero::Collide(Monster& src, Map& map)
+void Hero::Collide(Character* src, Map& map)
 {
-	TakeDamage(src);
+	src->Collide(this, map);
+}
+
+void Hero::Collide(Actor* src, Map& map)
+{
+	src->Collide(this, map);
+}
+
+void Hero::Collide(Monster* src, Map& map)
+{
+	DealDamage(src);
+	if (src->Health() <= 0)
+	{
+		Point tmp = pos;
+
+		SetPos(src->Pos());
+		map.map[pos.x][pos.y] = this;  // Swap
+
+		map.map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
+	}
+}
+
+void Hero::Collide(Princess* src, Map& map)
+{
+	SetPos(src->Pos());
 }
 
 char Hero::Symbol()
@@ -65,5 +99,5 @@ void Hero::Move(Map& map)
 		return;
 	}
 
-	Collide(*map.map[(pos + ways[s]).x][(pos + ways[s]).y], map); //
+	Collide(map.map[(pos + ways[s]).x][(pos + ways[s]).y], map); //
 }

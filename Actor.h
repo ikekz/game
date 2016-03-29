@@ -20,17 +20,17 @@ class Wall;
 class Space;
 class Character;
 class Fireball;
+class Princess;
 
 class Actor
 {
 public:
 	Actor(Point position);
 	virtual char Symbol() = 0;
-	virtual void Collide(Actor&, Map&) {};
-	virtual void Collide(Monster&, Map&) {};
-	virtual void Collide(Hero&, Map&) {};
-	virtual void Collide(Wall&, Map&) {};
-	virtual void Collide(Space&, Map&) {};
+	virtual void Collide(Actor*, Map&) {};
+	virtual void Collide(Character*, Map&) {};
+	virtual void Collide(Wall*, Map&) {};
+	virtual void Collide(Space*, Map&) {};
 	Point Pos();
 	void SetPos(Point& pos);
 	virtual void Action(Map&) {};
@@ -52,9 +52,7 @@ protected:
 class Wall : public Actor
 {
 public:
-	//void Collide(Character&, Map&);
-	void Collide(Monster&, Map&);
-	void Collide(Hero&, Map&);
+	void Collide(Character*, Map&);
 	Wall(Point& position);
 	char Symbol();
 };
@@ -62,9 +60,7 @@ public:
 class Space : public Actor
 {
 public:
-	void Collide(Actor&, Map&); //delete
-	void Collide(Hero&, Map&);
-	void Collide(Monster&, Map&);
+	void Collide(Character*, Map&); //delete
 	Space(Point& position);
 	char Symbol();
 };
@@ -74,7 +70,11 @@ class Character : public Actor
 public:
 	Character(Point& position, int health, int damage);
 	virtual void Move(Map&) = 0;
-	void TakeDamage(Character&);
+	virtual void Collide(Actor*, Map&);
+	virtual void Collide(Hero*, Map&) {};
+	virtual void Collide(Princess*, Map&) {};
+	virtual void Collide(Monster*, Map&) {};
+	void DealDamage(Character*);
 	int Health();
 	void Action(Map& map);
 protected:
@@ -86,8 +86,10 @@ protected:
 class Princess : public Character
 {
 public:
+	void Collide(Actor*, Map&);
+	void Collide(Character*, Map&);
 	//void Collide(Monster&, Map& map);
-	void Collide(Hero&, Map&);
+	//void Collide(Hero*, Map&);
 	Princess(int x, int y);
 	void Action(Map& map) {};
 	void Move(Map& map) {};
@@ -97,8 +99,10 @@ public:
 class Hero : public Character
 {
 public:
-	void Collide(Actor&, Map&);
-	void Collide(Monster&, Map&);
+	void Collide(Actor*, Map&);
+	void Collide(Character*, Map&);
+	void Collide(Monster*, Map&);
+	void Collide(Princess*, Map&);
 	Hero(int x, int y);
 	void Move(Map&);
 	char Symbol();
@@ -107,8 +111,9 @@ public:
 class Monster : public Character
 {
 public:
-	void Collide(Actor&, Map&);
-	void Collide(Hero&, Map&);
+	void Collide(Actor*, Map&);
+	void Collide(Character*, Map&);
+	void Collide(Hero*, Map&);
 	Monster(Point& position, int health, int damage);
 	void Move(Map&);
 	Point SelectWay();

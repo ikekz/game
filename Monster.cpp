@@ -29,7 +29,7 @@ void Monster::Move(Map& map)
 {
 	Point way = SelectWay();
 
-	Collide(*map.map[(pos + way).x][(pos + way).y], map);
+	Collide(map.map[(pos + way).x][(pos + way).y], map);
 
 	step.y = 0;
 }
@@ -48,28 +48,19 @@ char Dragon::Symbol()
 	return DRAGON;
 }
 
-void Monster::Collide(Actor& src, Map& map)
+void Monster::Collide(Actor* src, Map& map)
 {
-	src.Collide(*this, map);
+	src->Collide(this, map);
 }
 
-void Monster::Collide(Hero& src, Map& map)
+void Monster::Collide(Character* src, Map& map)
 {
-	TakeDamage(src);
-	if (health <= 0)
-	{
-		Point tmp = src.Pos();
-
-		src.SetPos(pos);
-		map.map[pos.x][pos.y] = &src;  // Swap
-
-		map.map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
-	}
+	src->Collide(this, map);
 }
 
-void Princess::Collide(Hero& src, Map& map)
+void Monster::Collide(Hero* src, Map& map)
 {
-	src.SetPos(pos);
+	DealDamage(src);
 }
 
 Wizard::Wizard(int x, int y) : Monster(Point(x, y), 50, 10) {}

@@ -16,7 +16,7 @@ public:
 	int Size();
 	Actor* operator[](const Point&);
 	bool CheckWay(char** buf, int x, int y);
-	void Swap(Actor&, Actor&);
+	void Swap(Actor*, Actor*);
 	void PlaceHeroes();
 	Point CalcWay(Point&, Point&);
 	std::vector<std::vector<Actor*>> map;

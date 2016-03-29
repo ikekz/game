@@ -17,28 +17,12 @@ char Space::Symbol()
 	return SPACE;
 }
 
-void Space::Collide(Actor& src, Map& map)
+void Space::Collide(Character* src, Map& map)
 {
-	map.Swap(src, *this);
+	map.Swap(src, this);
 }
 
-void Space::Collide(Hero& src, Map& map)
+void Wall::Collide(Character* src, Map& map)
 {
-	Collide(*(Actor*)(&src), map);
-}
-
-void Space::Collide(Monster& src, Map& map)
-{
-	Collide(*(Actor*)(&src), map);
-}
-
-void Wall::Collide(Hero& src, Map& map)
-{
-	cout << "Enter the correct action" << endl;
-	src.Move(map);
-}
-
-void Wall::Collide(Monster& src, Map& map)
-{
-	src.Move(map);
+	src->Move(map);
 }

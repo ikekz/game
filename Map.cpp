@@ -38,15 +38,15 @@ void Map::PlaceHeroes()
 	map[princess->Pos().x][princess->Pos().y] = princess;
 }
 
-void Map::Swap(Actor& src1, Actor& src2)
+void Map::Swap(Actor* src1, Actor* src2)
 {
-	Point tmp = src1.Pos();
+	Point tmp = src1->Pos();
 
-	src1.SetPos(src2.Pos());
-	map[src2.Pos().x][src2.Pos().y] = &src1;
+	src1->SetPos(src2->Pos());
+	map[src2->Pos().x][src2->Pos().y] = src1;
 
-	src2.SetPos(tmp);
-	map[src2.Pos().x][src2.Pos().y] = &src2;
+	src2->SetPos(tmp);
+	map[src2->Pos().x][src2->Pos().y] = src2;
 }
 
 
