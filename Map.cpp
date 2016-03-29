@@ -22,12 +22,12 @@ Actor* Map::operator[](const Point& src)
 	return map[src.x][src.y];
 }
 
-Point Map::CalcWay(Point& src1, Point& src2)
+Point Map::CalcWay(Point& from, Point& to)
 {
-	if (src1.x == src2.x)
-		return Point(0, src1.y > src2.y ? 1 : -1);
-	else if (src1.y == src2.y)
-		return Point(src1.x > src2.x ? 1 : -1, 0);
+	if (from.x == to.x)
+		return Point(0, from.y > to.y ? -1 : 1);
+	else if (from.y == to.y)
+		return Point(from.x > to.x ? -1 : 1, 0);
 	else
 		return Point(-1, -1);
 }
