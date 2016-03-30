@@ -49,6 +49,10 @@ void Map::Swap(Actor* src1, Actor* src2)
 	map[src2->Pos().x][src2->Pos().y] = src2;
 }
 
+void Map::Clear(Point& src)
+{
+	map[src.x][src.y] = new Space(Point(src.x, src.y));
+}
 
 void Map::RenderMap()
 {

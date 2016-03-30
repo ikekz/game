@@ -18,7 +18,32 @@ char Fireball::Symbol()
 	return ways.find(way)->second;
 }
 
+int Fireball::Damage()
+{
+	return 200;
+}
+
 void Fireball::Action(Map& map)
 {
+	Collide(map[pos + way], map);
+}
 
+void Fireball::Collide(Actor* src, Map& map)
+{
+	src->Collide(this, map);
+}
+
+void Fireball::Collide(Character* src, Map& map)
+{
+	src->TakeDamage(Damage());
+	if (src->Health() <= 0)
+		map.Clear(src->Pos());
+	map.Clear(pos);
+	map.Swap(map[src->Pos()], map[pos]);
+}
+
+void Fireball::Collide(Fireball* src, Map& map)
+{
+	map.Clear(pos);
+	map.Clear(src->Pos());
 }

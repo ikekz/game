@@ -88,6 +88,5 @@ void Game::Move()
 
 	for (int i = 0; i < map.Size(); i++)
 		for (int j = 0; j < map.Size(); j++)
-			if (((Character*)buf[i][j])->Health() > 0)
-				buf[i][j]->Action(map);
+			buf[i][j]->Action(map);
 }

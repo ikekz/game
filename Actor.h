@@ -31,6 +31,7 @@ public:
 	virtual void Collide(Character*, Map&) {};
 	virtual void Collide(Wall*, Map&) {};
 	virtual void Collide(Space*, Map&) {};
+	virtual void Collide(Fireball*, Map&) {};
 	Point Pos();
 	void SetPos(Point& pos);
 	virtual void Action(Map&) {};
@@ -43,7 +44,11 @@ class Fireball : public Actor
 public:
 	void Action(Map& map);
 	Fireball(Point& position, Point& way);
+	void Collide(Actor*, Map&);
+	void Collide(Character*, Map&);
+	void Collide(Fireball*, Map&);
 	char Symbol();
+	int Damage();
 protected:
 	Point way;
 	static std::map<Point, char> ways;
@@ -53,6 +58,7 @@ class Wall : public Actor
 {
 public:
 	void Collide(Character*, Map&);
+	void Collide(Fireball*, Map&);
 	Wall(Point& position);
 	char Symbol();
 };
@@ -60,7 +66,8 @@ public:
 class Space : public Actor
 {
 public:
-	void Collide(Character*, Map&); //delete
+	void Collide(Character*, Map&);
+	void Collide(Fireball*, Map&);
 	Space(Point& position);
 	char Symbol();
 };
@@ -70,11 +77,13 @@ class Character : public Actor
 public:
 	Character(Point& position, int health, int damage);
 	virtual void Move(Map&) = 0;
-	virtual void Collide(Actor*, Map&);
+	void Collide(Actor*, Map&);
 	virtual void Collide(Hero*, Map&) {};
 	virtual void Collide(Princess*, Map&) {};
 	virtual void Collide(Monster*, Map&) {};
+	void Collide(Fireball*, Map&);
 	void DealDamage(Character*);
+	void TakeDamage(int damage);
 	int Health();
 	void Action(Map& map);
 protected:
@@ -88,8 +97,6 @@ class Princess : public Character
 public:
 	void Collide(Actor*, Map&);
 	void Collide(Character*, Map&);
-	//void Collide(Monster&, Map& map);
-	//void Collide(Hero*, Map&);
 	Princess(int x, int y);
 	void Action(Map& map) {};
 	void Move(Map& map) {};
@@ -114,6 +121,7 @@ public:
 	void Collide(Actor*, Map&);
 	void Collide(Character*, Map&);
 	void Collide(Hero*, Map&);
+	void Collide(Monster*, Map&);
 	Monster(Point& position, int health, int damage);
 	void Move(Map&);
 	Point SelectWay();

@@ -16,7 +16,8 @@ Character::Character(Point& position, int health, int damage) : Actor(position),
 
 void Character::Action(Map& map)
 {
-	Move(map);
+	if (health > 0)
+		Move(map);
 }
 
 int Character::Health()
@@ -32,6 +33,20 @@ void Character::Collide(Actor* src, Map& map)
 void Character::DealDamage(Character* enemy)
 {
 	enemy->health -= damage;
+}
+
+void Character::TakeDamage(int damage)
+{
+	health -= damage;
+}
+
+void Character::Collide(Fireball* src, Map& map)
+{
+	TakeDamage(src->Damage()); // сделать везде где можно обьеденить монстров в карактер
+	if (Health() <= 0)
+		map.Clear(pos);
+	map.Clear(src->Pos());
+	map.Swap(map[src->Pos()], map[pos]);
 }
 
 Princess::Princess(int x, int y) : Character(Point(x, y), 0, 0) {}
@@ -51,7 +66,7 @@ void Princess::Collide(Actor* src, Map& map)
 	src->Collide(this, map);
 }
 
-Hero::Hero(int x, int y) : Character(Point(x, y), 500, 50) {}
+Hero::Hero(int x, int y) : Character(Point(x, y), 5000, 50) {}
 
 void Hero::Collide(Character* src, Map& map)
 {
@@ -68,12 +83,8 @@ void Hero::Collide(Monster* src, Map& map)
 	DealDamage(src);
 	if (src->Health() <= 0)
 	{
-		Point tmp = pos;
-
-		SetPos(src->Pos());
-		map.map[pos.x][pos.y] = this;  // Swap
-
-		map.map[tmp.x][tmp.y] = new Space(Point(tmp.x, tmp.y));
+		map.Clear(src->Pos());
+		map.Swap(map[src->Pos()], map[pos]);
 	}
 }
 

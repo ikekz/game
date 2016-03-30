@@ -63,6 +63,11 @@ void Monster::Collide(Hero* src, Map& map)
 	DealDamage(src);
 }
 
+void Monster::Collide(Monster* src, Map& map)
+{
+	Move(map);
+}
+
 Wizard::Wizard(int x, int y) : Monster(Point(x, y), 50, 10) {}
 
 char Wizard::Symbol()
@@ -80,6 +85,6 @@ void Wizard::Action(Map& map)
 	Point way = map.CalcWay(pos, map.hero->Pos());
 	if ((pos.x == map.hero->Pos().x || pos.y == map.hero->Pos().y) && map.map[(pos + way).x][(pos + way).y]->Symbol() == SPACE)
 		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way);
-	else
+	else if (health > 0)
 		Move(map);
 }

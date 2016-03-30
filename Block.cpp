@@ -22,7 +22,17 @@ void Space::Collide(Character* src, Map& map)
 	map.Swap(src, this);
 }
 
+void Space::Collide(Fireball* src, Map& map)
+{
+	map.Swap(src, this);
+}
+
 void Wall::Collide(Character* src, Map& map)
 {
 	src->Move(map);
+}
+
+void Wall::Collide(Fireball* src, Map& map)
+{
+	map.Clear(src->Pos());
 }
