@@ -26,6 +26,7 @@ int Fireball::Damage()
 void Fireball::Action(Map& map)
 {
 	Collide(map[pos + way], map);
+	map.acted[pos.x][pos.y] = 1;
 }
 
 void Fireball::Collide(Actor* src, Map& map)

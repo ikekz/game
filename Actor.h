@@ -145,7 +145,7 @@ public:
 class Wizard : public Monster
 {
 public:
-	Fireball* CreateFireball(Point& way);
+	Fireball* CreateFireball(Point& way, Map&);
 	char Symbol();
 	Wizard(int x, int y);
 	void Action(Map&);

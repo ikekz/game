@@ -8,13 +8,24 @@ using namespace std;
 Map::Map(int size) : hero(new Hero(size - 2, 1)), princess(new Princess(1, size - 2))
 {
 	map.resize(size);
+	acted.resize(size);
 	for (int i = 0; i < size; i++)
+	{
 		map[i].resize(size);
+		acted[i].resize(size);
+	}
 };
 
 int Map::Size()
 {
 	return map.size();
+}
+
+void Map::RefreshActed()
+{
+	for (int i = 0; i < Size(); i++)
+		for (int j = 0; j < Size(); j++)
+			acted[i][j] = 0;
 }
 
 Actor* Map::operator[](const Point& src)
@@ -95,11 +106,13 @@ void Map::GenMap()
 	if (!CheckWay(buf, map.size() - 2, 1))
 		GenMap();
 	else
+	{
 		for (int i = 0; i < map.size(); i++)
 			for (int j = 0; j < map.size(); j++)
 				if (buf[i][j] == WALL)
 					map[i][j] = new Wall(Point(i, j));
 				else
 					map[i][j] = new Space(Point(i, j));
-
+		RefreshActed();
+	}
 }

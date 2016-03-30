@@ -16,8 +16,8 @@ Character::Character(Point& position, int health, int damage) : Actor(position),
 
 void Character::Action(Map& map)
 {
-	if (health > 0)
-		Move(map);
+	Move(map);
+	map.acted[pos.x][pos.y] = 1;
 }
 
 int Character::Health()
@@ -46,7 +46,7 @@ void Character::Collide(Fireball* src, Map& map)
 	if (Health() <= 0)
 		map.Clear(pos);
 	map.Clear(src->Pos());
-	map.Swap(map[src->Pos()], map[pos]);
+	//map.Swap(map[src->Pos()], map[pos]);
 }
 
 Princess::Princess(int x, int y) : Character(Point(x, y), 0, 0) {}

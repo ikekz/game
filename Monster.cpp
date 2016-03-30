@@ -75,8 +75,9 @@ char Wizard::Symbol()
 	return WIZARD;
 }
 
-Fireball* Wizard::CreateFireball(Point& way)
+Fireball* Wizard::CreateFireball(Point& way, Map& map)
 {
+	map.acted[(pos + way).x][(pos + way).y] = 1;
 	return new Fireball(pos + way, way);
 }
 
@@ -84,7 +85,8 @@ void Wizard::Action(Map& map)
 {
 	Point way = map.CalcWay(pos, map.hero->Pos());
 	if ((pos.x == map.hero->Pos().x || pos.y == map.hero->Pos().y) && map.map[(pos + way).x][(pos + way).y]->Symbol() == SPACE)
-		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way);
-	else if (health > 0)
+		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way, map);
+	else 
 		Move(map);
+	map.acted[pos.x][pos.y] = 1;
 }

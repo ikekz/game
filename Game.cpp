@@ -80,13 +80,11 @@ void Game::PrintStatus()
 void Game::Move()
 {
 	cout << "Hero health: " << ((Hero*)map.hero)->Health() << endl;
-
-	vector<vector<Actor*>> buf = map.map;
-	Point tmp = map.hero->Pos();
-	buf[tmp.x][tmp.y] = buf[0][0];
-	buf[0][0] = map.hero;
-
+	//сделать мап указателем
+	map.hero->Action(map);
 	for (int i = 0; i < map.Size(); i++)
 		for (int j = 0; j < map.Size(); j++)
-			buf[i][j]->Action(map);
+			if (!map.acted[i][j])
+				map.map[i][j]->Action(map);
+	map.RefreshActed();
 }

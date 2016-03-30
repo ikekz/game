@@ -21,6 +21,8 @@ public:
 	void Clear(Point&);
 	Point CalcWay(Point&, Point&);
 	std::vector<std::vector<Actor*>> map;
+	std::vector<std::vector<bool>> acted;
+	void RefreshActed();
 	Actor* hero;
 	Actor* princess;
 };
