@@ -13,6 +13,7 @@ public:
 	void Collide(Fireball*, Map&);
 	void DealDamage(Character*);
 	void TakeDamage(int damage);
+	void Heal(int);
 	int Health();
 	void Action(Map& map);
 protected:

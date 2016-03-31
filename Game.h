@@ -12,7 +12,7 @@ public:
 	void CreateWizard(int count);
 	void PrintStatus();
 	void CreateMedkit();
-	void Move();
+	void Act();
 	Game(int sizeMap = 10);
 	bool IsEnd();
 	int ActNumber();

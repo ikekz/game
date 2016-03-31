@@ -15,6 +15,11 @@ map<string, Point> Character::ways = {
 
 Character::Character(Point& position, int health, int damage) : Actor(position), health(health), damage(damage) {}
 
+void Character::Heal(int src)
+{
+	health += src;
+}
+
 void Character::Action(Map& map)
 {
 	Move(map);

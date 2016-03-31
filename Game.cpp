@@ -68,7 +68,7 @@ void Game::Start()
 	{
 		system("cls");
 		map.RenderMap();
-		Move();	
+		Act();	
 	}
 	
 	PrintStatus();
@@ -95,7 +95,7 @@ void Game::PrintStatus()
 		cout << "GAME OVER\n" << endl;
 }
 
-void Game::Move()
+void Game::Act()
 {
 	cout << "Hero health: " << ((Hero*)map.hero)->Health() << endl;
 	//сделать мап указателем
@@ -108,6 +108,6 @@ void Game::Move()
 	map.RefreshActed();
 
 	actNumber++;
-	if (actNumber % 3 == 0)
+	if (actNumber % 3 == 0 && Medkit::Count() < 5)
 		CreateMedkit();
 }

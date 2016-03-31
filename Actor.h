@@ -12,6 +12,7 @@
 #define WIZARD 'W'
 #define WALL '#'
 #define SPACE '.'
+#define MEDKIT '+'
 
 class Map;
 class Monster; 
