@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game game(25);
+Game game(23);
 
 int main(int argc, char* argv[])
 {

@@ -62,6 +62,11 @@ void Princess::Collide(Character* src, Map& map)
 	src->Collide(this, map);
 }
 
+void Princess::Collide(Fireball* src, Map& map)
+{
+	map.Clear(src->Pos());
+}
+
 void Princess::Collide(Actor* src, Map& map)
 {
 	src->Collide(this, map);
@@ -196,6 +201,11 @@ void Wizard::Action(Map& map)
 	if ((pos.x == map.hero->Pos().x || pos.y == map.hero->Pos().y) && map.map[(pos + way).x][(pos + way).y]->Symbol() == SPACE)
 		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way, map);
 	else
+	{
+		//for (auto it = ways.begin(); it != ways.end(); it++)
+		//	if (map.acted[(pos + it->second).x][(pos + it->second).y] != 1) пофиксить этот момент, чтобы если мага убили, он потом не ходил
+		//		map[pos + it->second]->Action(map); 
 		Move(map);
+	}
 	map.acted[pos.x][pos.y] = 1;
 }

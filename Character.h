@@ -26,6 +26,7 @@ class Princess : public Character
 public:
 	void Collide(Actor*, Map&);
 	void Collide(Character*, Map&);
+	void Collide(Fireball*, Map&);
 	Princess(int x, int y);
 	void Action(Map& map) {};
 	void Move(Map& map) {};
