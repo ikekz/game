@@ -1,7 +1,8 @@
 #include "Map.h"
 #include <iostream>
 #include "DFS.h"
-#include "Actor.h"
+#include "Character.h"
+#include "Block.h"
 
 using namespace std;
 

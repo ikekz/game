@@ -1,4 +1,5 @@
-#include "Actor.h"
+#include "Fireball.h"
+#include "Character.h"
 #include "Point.h"
 #include <iostream>
 

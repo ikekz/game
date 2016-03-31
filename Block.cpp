@@ -1,11 +1,15 @@
-#include "Actor.h"
+#include "Character.h"
 #include <iostream>
+#include "Fireball.h"
+#include "Block.h"
 
 using namespace std;
 
-Wall::Wall(Point& position) : Actor(position) {}
+Block::Block(Point& position) : Actor(position) {}
 
-Space::Space(Point& position) : Actor(position) {}
+Wall::Wall(Point& position) : Block(position) {}
+
+Space::Space(Point& position) : Block(position) {}
 
 char Wall::Symbol()
 {
