@@ -69,7 +69,7 @@ int Game::ActNumber()
 
 void Game::Start()
 {
-	//srand(time(0));
+	srand(time(0));
 	map.GenMap();
 	CreateCharacter();
 	CreateSpawner();

@@ -20,6 +20,7 @@ void Spawner::Collide(Fireball* src, Map& map)
 
 void Spawner::Action(Map& map)
 {
+	map.acted[pos.x][pos.y] = 1;
 	time++;
 	if (time >= NeedTime())
 	{
@@ -44,7 +45,6 @@ void Cemetry::Spawn(Map& map)
 			map.map[(pos + ways[i]).x][(pos + ways[i]).y] = new Zombie((pos + ways[i]).x, (pos + ways[i]).y);
 			break;
 		}
-
 }
 
 char Cemetry::Symbol()
