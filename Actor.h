@@ -31,6 +31,7 @@ public:
 	virtual void Collide(Character*, Map&) {};
 	virtual void Collide(Block*, Map&) {};
 	virtual void Collide(Fireball*, Map&) {};
+	virtual ~Actor() {};
 	Point Pos();
 	void SetPos(Point& pos);
 	virtual void Action(Map&) = 0;

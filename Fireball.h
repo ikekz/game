@@ -9,6 +9,7 @@ public:
 	void Collide(Actor*, Map&);
 	void Collide(Character*, Map&);
 	void Collide(Fireball*, Map&);
+	virtual ~Fireball() {};
 	char Symbol();
 	int Damage();
 protected:

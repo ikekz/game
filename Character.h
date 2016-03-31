@@ -14,6 +14,7 @@ public:
 	void DealDamage(Character*);
 	void TakeDamage(int damage);
 	void Heal(int);
+	virtual ~Character() {};
 	int Health();
 	void Action(Map& map);
 	virtual int MaxHealth() = 0;
@@ -31,6 +32,7 @@ public:
 	void Collide(Fireball*, Map&);
 	Princess(int x, int y);
 	void Action(Map& map) {};
+	virtual ~Princess() {};
 	void Move(Map& map) {};
 	char Symbol();
 	int MaxHealth();
@@ -43,6 +45,7 @@ public:
 	void Collide(Character*, Map&);
 	void Collide(Monster*, Map&);
 	void Collide(Princess*, Map&);
+	virtual ~Hero() {};
 	Hero(int x, int y);
 	void Move(Map&);
 	char Symbol();
@@ -56,6 +59,7 @@ public:
 	void Collide(Character*, Map&);
 	void Collide(Hero*, Map&);
 	void Collide(Monster*, Map&);
+	virtual ~Monster() {};
 	Monster(Point& position, int health, int damage);
 	void Move(Map&);
 	Point SelectWay();
@@ -67,6 +71,7 @@ class Zombie : public Monster
 public:
 	Zombie(int x, int y);
 	int MaxHealth();
+	virtual ~Zombie() {};
 	char Symbol();
 };
 
@@ -74,6 +79,7 @@ class Dragon : public Monster
 {
 public:
 	Dragon(int x, int y);
+	virtual ~Dragon() {};
 	int MaxHealth();
 	char Symbol();
 };
@@ -81,6 +87,7 @@ public:
 class Wizard : public Monster
 {
 public:
+	virtual ~Wizard() {};
 	Fireball* CreateFireball(Point& way, Map&);
 	char Symbol();
 	Wizard(int x, int y);

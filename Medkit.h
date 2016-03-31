@@ -11,7 +11,7 @@ public:
 	int PowerHeal();
 	void Action(Map&) {};
 	static int Count();
-	~Medkit();
+	virtual ~Medkit();
 private:
 	static int count;
 };
