@@ -21,6 +21,7 @@ class Block;
 class Character;
 class Fireball;
 class Princess;
+class Spawner;
 
 class Actor
 {
@@ -31,6 +32,7 @@ public:
 	virtual void Collide(Character*, Map&) {};
 	virtual void Collide(Block*, Map&) {};
 	virtual void Collide(Fireball*, Map&) {};
+	virtual void Collide(Spawner*, Map&) {};
 	virtual ~Actor() {};
 	Point Pos();
 	void SetPos(Point& pos);
