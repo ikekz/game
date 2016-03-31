@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Character.h"
 #include "Point.h"
+#include "Medkit.h"
 #include <iostream>
 #include <ctime>
 #include <stdlib.h>
@@ -51,6 +52,11 @@ bool Game::IsEnd()
 		return 0;
 }
 
+int Game::ActNumber()
+{
+	return actNumber;
+}
+
 void Game::Start()
 {
 	srand(time(0));
@@ -68,6 +74,17 @@ void Game::Start()
 	PrintStatus();
 }
 
+void Game::CreateMedkit()
+{
+	for (int i = 1, p = rand() % (map.Size() - 2) + 1; i < map.Size(); i++, p++, p >= map.Size() ? p = 1 : p = p)
+		for (int j = 1, k = rand() % (map.Size() - 2) + 1; j < map.Size(); j++, k++, k >= map.Size() ? k = 1 : k = k)
+			if (map.map[p][k]->Symbol() == SPACE)
+			{
+				map.map[p][k] = new Medkit(Point(p, k));
+				i = j = map.Size();
+			}
+}
+
 void Game::PrintStatus()
 {
 	system("cls");
@@ -82,10 +99,15 @@ void Game::Move()
 {
 	cout << "Hero health: " << ((Hero*)map.hero)->Health() << endl;
 	//сделать мап указателем
+	
 	map.hero->Action(map);
 	for (int i = 0; i < map.Size(); i++)
 		for (int j = 0; j < map.Size(); j++)
 			if (!map.acted[i][j])
 				map.map[i][j]->Action(map);
 	map.RefreshActed();
+
+	actNumber++;
+	if (actNumber % 3 == 0)
+		CreateMedkit();
 }

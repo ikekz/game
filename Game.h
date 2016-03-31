@@ -11,9 +11,12 @@ public:
 	void CreateDragon(int count);
 	void CreateWizard(int count);
 	void PrintStatus();
+	void CreateMedkit();
 	void Move();
 	Game(int sizeMap = 10);
 	bool IsEnd();
+	int ActNumber();
 private:
+	int actNumber = 0;
 	Map map;
 };
