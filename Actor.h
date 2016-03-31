@@ -13,6 +13,8 @@
 #define WALL '#'
 #define SPACE '.'
 #define MEDKIT '+'
+#define CEMETRY 'C'
+#define NEST 'N'
 
 class Map;
 class Monster; 

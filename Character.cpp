@@ -25,7 +25,7 @@ void Character::Heal(int src)
 void Character::Action(Map& map)
 {
 	Move(map);
-	map.acted[pos.x][pos.y] = 1;
+	//map.acted[pos.x][pos.y] = 1;
 }
 
 int Character::Health()
@@ -51,6 +51,7 @@ void Character::TakeDamage(int damage)
 void Character::Collide(Fireball* src, Map& map)
 {
 	TakeDamage(src->Damage()); // сделать везде где можно обьеденить монстров в карактер
+	map.acted[pos.x][pos.y] = 1;
 	if (Health() <= 0)
 		map.Clear(pos);
 	map.Clear(src->Pos());
@@ -109,11 +110,13 @@ void Hero::Collide(Monster* src, Map& map)
 		map.Clear(src->Pos());
 		map.Swap(map[src->Pos()], map[pos]);
 	}
+	map.acted[pos.x][pos.y] = 1;
 }
 
 void Hero::Collide(Princess* src, Map& map)
 {
 	SetPos(src->Pos());
+	map.acted[pos.x][pos.y] = 1;
 }
 
 char Hero::Symbol()
@@ -138,31 +141,18 @@ void Hero::Move(Map& map)
 
 Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
-Point Monster::SelectWay()
-{
-	if (step.y > 4)
-		return Point(0, 0);
-
-	std::map<string, Point>::iterator it = ways.begin();
-	step.x = (step.x + 1) % ways.size();
-
-	if (step.y == 0)
-	{
-		step.x = rand() % ways.size();
-		step.y++;
-	}
-
-	advance(it, step.x);
-	return it->second;
-}
+set<char> Monster::peace = { SPACE, MEDKIT };
 
 void Monster::Move(Map& map)
 {
-	Point way = SelectWay();
-
-	Collide(map.map[(pos + way).x][(pos + way).y], map);
-
-	step.y = 0;
+	std::map<string, Point>::iterator it = ways.begin();
+	advance(it, rand() % ways.size());
+	for (int i = 0; i < ways.size(); it++, it = it == ways.end() ? ways.begin() : it, i++)
+		if (peace.find(map[pos + it->second]->Symbol()) != peace.end())
+		{
+			Collide(map.map[(pos + it->second).x][(pos + it->second).y], map);
+			break;
+		}
 }
 
 void Monster::Collide(Actor* src, Map& map)
@@ -178,6 +168,7 @@ void Monster::Collide(Character* src, Map& map)
 void Monster::Collide(Hero* src, Map& map)
 {
 	DealDamage(src);
+	map.acted[pos.x][pos.y] = 1;
 }
 
 void Monster::Collide(Monster* src, Map& map)

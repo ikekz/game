@@ -27,7 +27,7 @@ int Fireball::Damage()
 void Fireball::Action(Map& map)
 {
 	Collide(map[pos + way], map);
-	map.acted[pos.x][pos.y] = 1;
+	//map.acted[pos.x][pos.y] = 1;
 }
 
 map<Point, char>& Fireball::GetWays()
@@ -47,6 +47,7 @@ void Fireball::Collide(Character* src, Map& map)
 		map.Clear(src->Pos());
 	map.Clear(pos);
 	map.Swap(map[src->Pos()], map[pos]);
+	map.acted[src->Pos().x][src->Pos().y] = 1;
 }
 
 void Fireball::Collide(Fireball* src, Map& map)

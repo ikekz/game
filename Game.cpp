@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Character.h"
 #include "Point.h"
+#include "Spawner.h"
 #include "Medkit.h"
 #include <iostream>
 #include <ctime>
@@ -44,6 +45,15 @@ void Game::CreateWizard(int count)
 	}
 }
 
+void Game::CreateSpawner()
+{
+	Cemetry* c = new Cemetry(Point(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1));
+	map.map[c->Pos().x][c->Pos().y] = c;
+
+	Nest* n = new Nest(Point(rand() % (map.Size() - 2) + 1, rand() % (map.Size() - 2) + 1));
+	map.map[n->Pos().x][n->Pos().y] = n;
+}
+
 bool Game::IsEnd()
 {
 	if (((Hero*)map.hero)->Health() <= 0 || map.hero->Pos() == map.princess->Pos())
@@ -59,9 +69,10 @@ int Game::ActNumber()
 
 void Game::Start()
 {
-	srand(time(0));
+	//srand(time(0));
 	map.GenMap();
 	CreateCharacter();
+	CreateSpawner();
 	map.PlaceHeroes();
 
 	while (!IsEnd())

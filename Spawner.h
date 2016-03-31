@@ -5,13 +5,15 @@
 class Spawner : public Actor
 {
 public:
+	void Collide(Character*, Map&);
+	void Collide(Fireball*, Map&);
 	virtual ~Spawner() {};
 	Spawner(Point& position);
 	virtual void Action(Map&);
 	virtual void Spawn(Map&) = 0;
 	virtual int NeedTime() = 0;
 protected:
-	int time;
+	int time = 0;
 	static std::vector<Point> ways;
 };
 
@@ -22,6 +24,7 @@ public:
 	int NeedTime();
 	Cemetry(Point& position);
 	void Spawn(Map&);
+	char Symbol();
 };
 
 class Nest : public Spawner
@@ -31,4 +34,5 @@ public:
 	int NeedTime();
 	Nest(Point& position);
 	void Spawn(Map&);
+	char Symbol();
 };

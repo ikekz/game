@@ -24,16 +24,18 @@ char Space::Symbol()
 void Space::Collide(Character* src, Map& map)
 {
 	map.Swap(src, this);
+	map.acted[src->Pos().x][src->Pos().y] = 1;
 }
 
 void Space::Collide(Fireball* src, Map& map)
 {
 	map.Swap(src, this);
+	map.acted[src->Pos().x][src->Pos().y] = 1;
 }
 
 void Wall::Collide(Character* src, Map& map)
 {
-	src->Move(map);
+	map.acted[src->Pos().x][src->Pos().y] = 1;
 }
 
 void Wall::Collide(Fireball* src, Map& map)

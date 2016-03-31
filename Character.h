@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+#include <set>
 
 class Character : public Actor
 {
@@ -62,8 +63,10 @@ public:
 	virtual ~Monster() {};
 	Monster(Point& position, int health, int damage);
 	void Move(Map&);
-	Point SelectWay();
-	Point step; //переназвать
+	//Point SelectWay();
+	//Point step; //переназвать
+protected:
+	static std::set<char> peace;
 };
 
 class Zombie : public Monster

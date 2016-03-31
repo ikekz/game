@@ -1,11 +1,22 @@
 #include "Spawner.h"
 #include "Character.h"
+#include "Fireball.h"
 
 using namespace std;
 
 vector<Point> Spawner::ways = { Point(-1, 0), Point(1, 0), Point(0, -1), Point(0, 1) };
 
 Spawner::Spawner(Point& position) : Actor(position) {}
+
+void Spawner::Collide(Character* src, Map& map)
+{
+	map.acted[src->Pos().x][src->Pos().y] = 1;
+}
+
+void Spawner::Collide(Fireball* src, Map& map)
+{
+	map.Clear(src->Pos());
+}
 
 void Spawner::Action(Map& map)
 {
@@ -15,6 +26,7 @@ void Spawner::Action(Map& map)
 		Spawn(map);
 		time = 0;
 	}
+	//map.acted[pos.x][pos.y]
 }
 
 Cemetry::Cemetry(Point& position) : Spawner(position) {}
@@ -35,9 +47,14 @@ void Cemetry::Spawn(Map& map)
 
 }
 
+char Cemetry::Symbol()
+{
+	return CEMETRY;
+}
+
 Nest::Nest(Point& position) : Spawner(position) {}
 
-int Cemetry::NeedTime()
+int Nest::NeedTime()
 {
 	return 8;
 }
@@ -50,4 +67,9 @@ void Nest::Spawn(Map& map)
 			map.map[(pos + ways[i]).x][(pos + ways[i]).y] = new Dragon((pos + ways[i]).x, (pos + ways[i]).y);
 			break;
 		}
+}
+
+char Nest::Symbol()
+{
+	return NEST;
 }

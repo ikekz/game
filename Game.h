@@ -7,6 +7,7 @@ class Game
 public:
 	void Start();
 	void CreateCharacter();
+	void CreateSpawner();
 	void CreateZombie(int count);
 	void CreateDragon(int count);
 	void CreateWizard(int count);
