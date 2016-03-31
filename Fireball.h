@@ -12,6 +12,7 @@ public:
 	virtual ~Fireball() {};
 	char Symbol();
 	int Damage();
+	static std::map<Point, char>& GetWays();
 protected:
 	Point way;
 	static std::map<Point, char> ways;

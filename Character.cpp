@@ -234,9 +234,9 @@ void Wizard::Action(Map& map)
 		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way, map);
 	else
 	{
-		//for (auto it = ways.begin(); it != ways.end(); it++)
-		//	if (map.acted[(pos + it->second).x][(pos + it->second).y] != 1) пофиксить этот момент, чтобы если мага убили, он потом не ходил
-		//		map[pos + it->second]->Action(map); 
+		for (auto it = ways.begin(); it != ways.end(); it++)
+			if (map[pos + it->second]->Symbol() == Fireball::GetWays()[it->second]) 
+				map[pos + it->second]->Action(map); 
 		Move(map);
 	}
 	map.acted[pos.x][pos.y] = 1;

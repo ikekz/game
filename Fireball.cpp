@@ -30,6 +30,11 @@ void Fireball::Action(Map& map)
 	map.acted[pos.x][pos.y] = 1;
 }
 
+map<Point, char>& Fireball::GetWays()
+{
+	return ways;
+}
+
 void Fireball::Collide(Actor* src, Map& map)
 {
 	src->Collide(this, map);
