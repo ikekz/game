@@ -18,6 +18,8 @@ Character::Character(Point& position, int health, int damage) : Actor(position),
 void Character::Heal(int src)
 {
 	health += src;
+	if (health > MaxHealth())
+		health = MaxHealth();
 }
 
 void Character::Action(Map& map)
@@ -55,7 +57,12 @@ void Character::Collide(Fireball* src, Map& map)
 	//map.Swap(map[src->Pos()], map[pos]);
 }
 
-Princess::Princess(int x, int y) : Character(Point(x, y), 0, 0) {}
+Princess::Princess(int x, int y) : Character(Point(x, y), MaxHealth(), 0) {}
+
+int Princess::MaxHealth()
+{
+	return 0;
+}
 
 char Princess::Symbol()
 {
@@ -77,7 +84,12 @@ void Princess::Collide(Actor* src, Map& map)
 	src->Collide(this, map);
 }
 
-Hero::Hero(int x, int y) : Character(Point(x, y), 5000, 50) {}
+Hero::Hero(int x, int y) : Character(Point(x, y), MaxHealth(), 50) {}
+
+int Hero::MaxHealth()
+{
+	return 5000;
+}
 
 void Hero::Collide(Character* src, Map& map)
 {
@@ -173,21 +185,36 @@ void Monster::Collide(Monster* src, Map& map)
 	Move(map);
 }
 
-Zombie::Zombie(int x, int y) : Monster(Point(x, y), 50, 50) {}
+Zombie::Zombie(int x, int y) : Monster(Point(x, y), MaxHealth(), 50) {}
+
+int Zombie::MaxHealth()
+{
+	return 50;
+}
 
 char Zombie::Symbol()
 {
 	return ZOMBIE;
 }
 
-Dragon::Dragon(int x, int y) : Monster(Point(x, y), 100, 150) {}
+Dragon::Dragon(int x, int y) : Monster(Point(x, y), MaxHealth(), 150) {}
+
+int Dragon::MaxHealth()
+{
+	return 100;
+}
 
 char Dragon::Symbol()
 {
 	return DRAGON;
 }
 
-Wizard::Wizard(int x, int y) : Monster(Point(x, y), 50, 10) {}
+Wizard::Wizard(int x, int y) : Monster(Point(x, y), MaxHealth(), 10) {}
+
+int Wizard::MaxHealth()
+{
+	return 50;
+}
 
 char Wizard::Symbol()
 {

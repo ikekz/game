@@ -16,6 +16,7 @@ public:
 	void Heal(int);
 	int Health();
 	void Action(Map& map);
+	virtual int MaxHealth() = 0;
 protected:
 	int health;
 	int damage;
@@ -32,6 +33,7 @@ public:
 	void Action(Map& map) {};
 	void Move(Map& map) {};
 	char Symbol();
+	int MaxHealth();
 };
 
 class Hero : public Character
@@ -44,6 +46,7 @@ public:
 	Hero(int x, int y);
 	void Move(Map&);
 	char Symbol();
+	int MaxHealth();
 };
 
 class Monster : public Character
@@ -63,6 +66,7 @@ class Zombie : public Monster
 {
 public:
 	Zombie(int x, int y);
+	int MaxHealth();
 	char Symbol();
 };
 
@@ -70,6 +74,7 @@ class Dragon : public Monster
 {
 public:
 	Dragon(int x, int y);
+	int MaxHealth();
 	char Symbol();
 };
 
@@ -79,5 +84,6 @@ public:
 	Fireball* CreateFireball(Point& way, Map&);
 	char Symbol();
 	Wizard(int x, int y);
+	int MaxHealth();
 	void Action(Map&);
 };
