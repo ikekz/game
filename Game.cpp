@@ -109,7 +109,6 @@ void Game::PrintStatus()
 void Game::Act()
 {
 	cout << "Hero health: " << ((Hero*)map.GetHero())->Health() << endl;
-	//сделать мап указателем
 	
 	map.GetHero()->Action(map);
 	for (int i = 0; i < map.Size(); i++)

@@ -55,6 +55,7 @@ void Character::Collide(Fireball* src, Map& map)
 	if (Health() <= 0)
 		map.Clear(pos);
 	map.Clear(src->Pos());
+	delete src;
 	//map.Swap(map[src->Pos()], map[pos]);
 }
 
@@ -78,6 +79,7 @@ void Princess::Collide(Character* src, Map& map)
 void Princess::Collide(Fireball* src, Map& map)
 {
 	map.Clear(src->Pos());
+	delete src;
 }
 
 void Princess::Collide(Actor* src, Map& map)
@@ -109,6 +111,7 @@ void Hero::Collide(Monster* src, Map& map)
 	{
 		map.Clear(src->Pos());
 		map.Swap(map[src->Pos()], map[pos]);
+		delete src;
 	}
 	map.SetActed(pos, 1);
 }

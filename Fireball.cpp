@@ -47,10 +47,13 @@ void Fireball::Collide(Character* src, Map& map)
 	map.Clear(pos);
 	map.Swap(map[src->Pos()], map[pos]);
 	map.SetActed(src->Pos(), 1);
+	delete this;
 }
 
 void Fireball::Collide(Fireball* src, Map& map)
 {
 	map.Clear(pos);
 	map.Clear(src->Pos());
+	delete src;
+	delete this;
 }

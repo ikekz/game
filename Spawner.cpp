@@ -16,6 +16,7 @@ void Spawner::Collide(Character* src, Map& map)
 void Spawner::Collide(Fireball* src, Map& map)
 {
 	map.Clear(src->Pos());
+	delete src;
 }
 
 void Spawner::Action(Map& map)
