@@ -63,10 +63,6 @@ public:
 	virtual ~Monster() {};
 	Monster(Point& position, int health, int damage);
 	void Move(Map&);
-	//Point SelectWay();
-	//Point step; //переназвать
-protected:
-	static std::set<char> peace;
 };
 
 class Zombie : public Monster

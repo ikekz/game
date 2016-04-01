@@ -115,8 +115,8 @@ void Hero::Collide(Monster* src, Map& map)
 
 void Hero::Collide(Princess* src, Map& map)
 {
-	SetPos(src->Pos());
 	map.acted[pos.x][pos.y] = 1;
+	SetPos(src->Pos());
 }
 
 char Hero::Symbol()
@@ -141,10 +141,9 @@ void Hero::Move(Map& map)
 
 Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
-set<char> Monster::peace = { SPACE, MEDKIT };
-
 void Monster::Move(Map& map)
 {
+	set<char> peace = { SPACE, MEDKIT, HERO};
 	std::map<string, Point>::iterator it = ways.begin();
 	advance(it, rand() % ways.size());
 	for (int i = 0; i < ways.size(); it++, it = it == ways.end() ? ways.begin() : it, i++)
