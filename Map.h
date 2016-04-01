@@ -20,9 +20,16 @@ public:
 	void PlaceHeroes();
 	void Clear(Point&);
 	Point CalcWay(Point&, Point&);
+	void RefreshActed();
+	Actor* GetHero();
+	Actor* GetPrincess();
+	void SetActed(Point&, bool);
+	void Insert(Point&, Actor*);
+	bool IsActed(Point&);
+	//Actor* GetActor(Point&);
+private:
 	std::vector<std::vector<Actor*>> map;
 	std::vector<std::vector<bool>> acted;
-	void RefreshActed();
 	Actor* hero;
 	Actor* princess;
 };

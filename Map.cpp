@@ -66,6 +66,31 @@ void Map::Clear(Point& src)
 	map[src.x][src.y] = new Space(Point(src.x, src.y));
 }
 
+Actor* Map::GetHero()
+{
+	return hero;
+}
+
+Actor* Map::GetPrincess()
+{
+	return princess;
+}
+
+void Map::SetActed(Point& pos, bool src)
+{
+	acted[pos.x][pos.y] = src;
+}
+
+void Map::Insert(Point& pos, Actor* src)
+{
+	map[pos.x][pos.y] = src;
+}
+
+bool Map::IsActed(Point& pos)
+{
+	return acted[pos.x][pos.y];
+}
+
 void Map::RenderMap()
 {
 	for (int i = 0; i < map.size(); i++)

@@ -28,7 +28,7 @@ void Medkit::Collide(Character* src, Map& map)
 {
 	src->Heal(PowerHeal());
 	map.Clear(pos);
-	map.acted[src->Pos().x][src->Pos().y] = 1;
+	map.SetActed(src->Pos(), 1);
 	delete this;
 }
 

@@ -51,7 +51,7 @@ void Character::TakeDamage(int damage)
 void Character::Collide(Fireball* src, Map& map)
 {
 	TakeDamage(src->Damage()); // сделать везде где можно обьеденить монстров в карактер
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 	if (Health() <= 0)
 		map.Clear(pos);
 	map.Clear(src->Pos());
@@ -110,12 +110,12 @@ void Hero::Collide(Monster* src, Map& map)
 		map.Clear(src->Pos());
 		map.Swap(map[src->Pos()], map[pos]);
 	}
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 }
 
 void Hero::Collide(Princess* src, Map& map)
 {
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 	SetPos(src->Pos());
 }
 
@@ -136,20 +136,20 @@ void Hero::Move(Map& map)
 		return;
 	}
 
-	Collide(map.map[(pos + ways[s]).x][(pos + ways[s]).y], map); //
+	Collide(map[pos + ways[s]], map); //
 }
 
 Monster::Monster(Point& position, int health, int damage) : Character(position, health, damage) {}
 
 void Monster::Move(Map& map)
 {
-	set<char> peace = { SPACE, MEDKIT, HERO};
+	set<char> p = { SPACE, MEDKIT, HERO };
 	std::map<string, Point>::iterator it = ways.begin();
 	advance(it, rand() % ways.size());
 	for (int i = 0; i < ways.size(); it++, it = it == ways.end() ? ways.begin() : it, i++)
-		if (peace.find(map[pos + it->second]->Symbol()) != peace.end())
+		if (p.find(map[pos + it->second]->Symbol()) != p.end())
 		{
-			Collide(map.map[(pos + it->second).x][(pos + it->second).y], map);
+			Collide(map[pos + it->second], map);
 			break;
 		}
 }
@@ -167,7 +167,7 @@ void Monster::Collide(Character* src, Map& map)
 void Monster::Collide(Hero* src, Map& map)
 {
 	DealDamage(src);
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 }
 
 void Monster::Collide(Monster* src, Map& map)
@@ -213,15 +213,15 @@ char Wizard::Symbol()
 
 Fireball* Wizard::CreateFireball(Point& way, Map& map)
 {
-	map.acted[(pos + way).x][(pos + way).y] = 1;
+	map.SetActed(pos + way, 1);
 	return new Fireball(pos + way, way);
 }
 
 void Wizard::Action(Map& map)
 {
-	Point way = map.CalcWay(pos, map.hero->Pos());
-	if ((pos.x == map.hero->Pos().x || pos.y == map.hero->Pos().y) && map.map[(pos + way).x][(pos + way).y]->Symbol() == SPACE)
-		map.map[(pos + way).x][(pos + way).y] = CreateFireball(way, map);
+	Point way = map.CalcWay(pos, map.GetHero()->Pos());
+	if ((pos.x == map.GetHero()->Pos().x || pos.y == map.GetHero()->Pos().y) && map[pos + way]->Symbol() == SPACE)
+		map.Insert(pos + way, CreateFireball(way, map));
 	else
 	{
 		for (auto it = ways.begin(); it != ways.end(); it++)
@@ -229,5 +229,5 @@ void Wizard::Action(Map& map)
 				map[pos + it->second]->Action(map); 
 		Move(map);
 	}
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 }

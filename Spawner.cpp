@@ -10,7 +10,7 @@ Spawner::Spawner(Point& position) : Actor(position) {}
 
 void Spawner::Collide(Character* src, Map& map)
 {
-	map.acted[src->Pos().x][src->Pos().y] = 1;
+	map.SetActed(src->Pos(), 1);
 }
 
 void Spawner::Collide(Fireball* src, Map& map)
@@ -20,7 +20,7 @@ void Spawner::Collide(Fireball* src, Map& map)
 
 void Spawner::Action(Map& map)
 {
-	map.acted[pos.x][pos.y] = 1;
+	map.SetActed(pos, 1);
 	time++;
 	if (time >= NeedTime())
 	{
@@ -42,7 +42,7 @@ void Cemetry::Spawn(Map& map)
 	for (int i = 0; i < ways.size(); i++)
 		if (map[pos + ways[i]]->Symbol() == SPACE)
 		{
-			map.map[(pos + ways[i]).x][(pos + ways[i]).y] = new Zombie((pos + ways[i]).x, (pos + ways[i]).y);
+			map.Insert(pos + ways[i], new Zombie((pos + ways[i]).x, (pos + ways[i]).y));
 			break;
 		}
 }
@@ -64,7 +64,7 @@ void Nest::Spawn(Map& map)
 	for (int i = 0; i < ways.size(); i++)
 		if (map[pos + ways[i]]->Symbol() == SPACE)
 		{
-			map.map[(pos + ways[i]).x][(pos + ways[i]).y] = new Dragon((pos + ways[i]).x, (pos + ways[i]).y);
+			map.Insert(pos + ways[i], new Dragon((pos + ways[i]).x, (pos + ways[i]).y));
 			break;
 		}
 }
