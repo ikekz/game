@@ -21,7 +21,7 @@ Medkit::~Medkit()
 
 char Medkit::Symbol()
 {
-	return MEDKIT;
+	return Cfg::GetInstance().MedkitSymbol();
 }
 
 void Medkit::Collide(Character* src, Map& map)
@@ -41,5 +41,5 @@ void Medkit::Collide(Fireball* src, Map& map)
 
 int Medkit::PowerHeal()
 {
-	return 100;
+	return Cfg::GetInstance().MedkitPowerHeal();
 }

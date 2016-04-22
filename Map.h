@@ -2,9 +2,6 @@
 #include <vector>
 #include "Point.h"
 
-#define WALL '#'
-#define SPACE '.'
-
 class Actor;
 
 class Map

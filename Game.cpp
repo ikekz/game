@@ -9,7 +9,10 @@
 
 using namespace std;
 
-Game::Game(int sizeMap) : map(sizeMap) {};
+Game::Game(int sizeMap) : map(sizeMap) 
+{
+	Cfg::GetInstance();
+};
 
 void Game::CreateCharacter()
 {
@@ -89,7 +92,7 @@ void Game::CreateMedkit()
 {
 	for (int i = 1, p = rand() % (map.Size() - 2) + 1; i < map.Size(); i++, p++, p >= map.Size() ? p = 1 : p = p)
 		for (int j = 1, k = rand() % (map.Size() - 2) + 1; j < map.Size(); j++, k++, k >= map.Size() ? k = 1 : k = k)
-			if (map[Point(p, k)]->Symbol() == SPACE)
+			if (map[Point(p, k)]->Symbol() == Cfg::GetInstance().SpaceSymbol())
 			{
 				map.Insert(Point(p, k), new Medkit(Point(p, k)));
 				i = j = map.Size();
@@ -118,6 +121,6 @@ void Game::Act()
 	map.RefreshActed();
 
 	actNumber++;
-	if (actNumber % 3 == 0 && Medkit::Count() < 5)
+	if (actNumber % 3 == 0 && Medkit::Count() < Cfg::GetInstance().MedkitMaxCount())
 		CreateMedkit();
 }

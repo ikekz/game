@@ -23,17 +23,16 @@ void Spawner::Action(Map& map)
 {
 	map.SetActed(pos, 1);
 	time++;
-	if (time >= NeedTime())
+	if (time >= Cooldown())
 	{
 		Spawn(map);
 		time = 0;
 	}
-	//map.acted[pos.x][pos.y]
 }
 
 Cemetry::Cemetry(Point& position) : Spawner(position) {}
 
-int Cemetry::NeedTime()
+int Cemetry::Cooldown()
 {
 	return 5;
 }
@@ -41,7 +40,7 @@ int Cemetry::NeedTime()
 void Cemetry::Spawn(Map& map)
 {
 	for (int i = 0; i < ways.size(); i++)
-		if (map[pos + ways[i]]->Symbol() == SPACE)
+		if (map[pos + ways[i]]->Symbol() == Cfg::GetInstance().SpaceSymbol())
 		{
 			map.Insert(pos + ways[i], new Zombie((pos + ways[i]).x, (pos + ways[i]).y));
 			break;
@@ -50,12 +49,12 @@ void Cemetry::Spawn(Map& map)
 
 char Cemetry::Symbol()
 {
-	return CEMETRY;
+	return Cfg::GetInstance().CemeterySymbol();
 }
 
 Nest::Nest(Point& position) : Spawner(position) {}
 
-int Nest::NeedTime()
+int Nest::Cooldown()
 {
 	return 8;
 }
@@ -63,7 +62,7 @@ int Nest::NeedTime()
 void Nest::Spawn(Map& map)
 {
 	for (int i = 0; i < ways.size(); i++)
-		if (map[pos + ways[i]]->Symbol() == SPACE)
+		if (map[pos + ways[i]]->Symbol() == Cfg::GetInstance().SpaceSymbol())
 		{
 			map.Insert(pos + ways[i], new Dragon((pos + ways[i]).x, (pos + ways[i]).y));
 			break;
@@ -72,5 +71,5 @@ void Nest::Spawn(Map& map)
 
 char Nest::Symbol()
 {
-	return NEST;
+	return Cfg::GetInstance().NestSymbol();
 }

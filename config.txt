@@ -1,0 +1,61 @@
+{
+	"knight" :
+	{
+		"health" : 5000,
+		"damage" : 50,
+		"symbol" : "K"
+	},
+	"princess":
+	{
+		"health" : 0,
+		"damage" : 0,
+		"symbol" : "P"
+	},
+	"zombie" :
+	{
+		"health" : 50,
+		"damage" : 50,
+		"symbol" : "Z"
+	},
+	"dragon" :
+	{
+		"health": 100,
+		"damage" : 150,
+		"symbol" : "D"
+	},
+	"wizard" :
+	{
+		"health": 50,
+		"damage" : 10,
+		"symbol" : "W"
+	},
+	"space" :
+	{
+		"symbol" : "."
+	},
+	"wall" :
+	{
+		"symbol" : "#"
+	},
+	"cemetery" :
+	{
+		"symbol" : "C",
+		"cooldown" : 5
+	},
+	"nest" :
+	{
+		"symbol" : "N",
+		"cooldown" : 8
+	},
+	"medkit" :
+	{
+		"symbol" : "+",
+		"cooldown" : 5,
+		"maxCount" : 5,
+		"powerHeal" : 100
+	},
+	"fireball":
+	{
+		"damage" : 200
+	}
+}

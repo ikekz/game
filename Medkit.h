@@ -4,7 +4,7 @@
 class Medkit : public Actor
 {
 public:
-	Medkit(Point& position); //vzaimodeistvie
+	Medkit(Point& position);
 	void Collide(Character*, Map&);
 	void Collide(Fireball*, Map&);
 	char Symbol();

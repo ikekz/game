@@ -11,7 +11,7 @@ public:
 	Spawner(Point& position);
 	virtual void Action(Map&);
 	virtual void Spawn(Map&) = 0;
-	virtual int NeedTime() = 0;
+	virtual int Cooldown() = 0;
 protected:
 	int time = 0;
 	static std::vector<Point> ways;
@@ -21,7 +21,7 @@ class Cemetry : public Spawner
 {
 public:
 	virtual ~Cemetry() {};
-	int NeedTime();
+	int Cooldown();
 	Cemetry(Point& position);
 	void Spawn(Map&);
 	char Symbol();
@@ -31,7 +31,7 @@ class Nest : public Spawner
 {
 public:
 	virtual ~Nest() {};
-	int NeedTime();
+	int Cooldown();
 	Nest(Point& position);
 	void Spawn(Map&);
 	char Symbol();

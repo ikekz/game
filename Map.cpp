@@ -120,14 +120,14 @@ void Map::GenMap()
 	{
 		buf[i] = new char[map.size()];
 		for (int j = 0; j < map.size(); j++)
-			buf[i][j] = SPACE;
+			buf[i][j] = Cfg::GetInstance().SpaceSymbol();
 	}
 
 	for (int i = 0; i < map.size(); i++)
-		buf[i][0] = buf[i][map.size() - 1] = buf[0][i] = buf[map.size() - 1][i] = WALL;
+		buf[i][0] = buf[i][map.size() - 1] = buf[0][i] = buf[map.size() - 1][i] = Cfg::GetInstance().WallSymbol();
 
 	for (int i = 0; i < 40; i++)
-		buf[rand() % (map.size() - 1) + 1][rand() % (map.size() - 1) + 1] = WALL;
+		buf[rand() % (map.size() - 1) + 1][rand() % (map.size() - 1) + 1] = Cfg::GetInstance().WallSymbol();
 
 	if (!CheckWay(buf, map.size() - 2, 1))
 		GenMap();
@@ -135,7 +135,7 @@ void Map::GenMap()
 	{
 		for (int i = 0; i < map.size(); i++)
 			for (int j = 0; j < map.size(); j++)
-				if (buf[i][j] == WALL)
+				if (buf[i][j] == Cfg::GetInstance().WallSymbol())
 					map[i][j] = new Wall(Point(i, j));
 				else
 					map[i][j] = new Space(Point(i, j));

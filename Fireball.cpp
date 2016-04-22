@@ -21,7 +21,7 @@ char Fireball::Symbol()
 
 int Fireball::Damage()
 {
-	return 200;
+	return Cfg::GetInstance().FireballDamage();
 }
 
 void Fireball::Action(Map& map)

@@ -4,17 +4,7 @@
 #include <string>
 #include <vector>
 #include "Map.h"
-
-#define HERO 'H'
-#define PRINCESS 'P'
-#define ZOMBIE 'Z'
-#define DRAGON 'D'
-#define WIZARD 'W'
-#define WALL '#'
-#define SPACE '.'
-#define MEDKIT '+'
-#define CEMETRY 'C'
-#define NEST 'N'
+#include "Cfg.h"
 
 class Map;
 class Monster; 

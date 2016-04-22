@@ -13,12 +13,12 @@ Space::Space(Point& position) : Block(position) {}
 
 char Wall::Symbol()
 {
-	return WALL;
+	return Cfg::GetInstance().WallSymbol();
 }
 
 char Space::Symbol()
 {
-	return SPACE;
+	return Cfg::GetInstance().SpaceSymbol();
 }
 
 void Space::Collide(Character* src, Map& map)
